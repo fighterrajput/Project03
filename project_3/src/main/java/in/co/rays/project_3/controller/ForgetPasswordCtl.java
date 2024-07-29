@@ -21,7 +21,7 @@ import in.co.rays.project_3.util.PropertyReader;
 import in.co.rays.project_3.util.ServletUtility;
 
 /**
- * Forget password ctl.To perform password send in email
+ * forget password ctl.To perform password send in email
  * 
  * @author Ankit Rajput
  *
@@ -72,17 +72,20 @@ public class ForgetPasswordCtl extends BaseCtl {
 			try {
 				System.out.println(dto.getLogin());
 				boolean flag = userModel.forgetPassword(dto.getLogin());
+				ServletUtility.setDto(dto, request);
 				ServletUtility.setSuccessMessage("password has been send to your login id", request);
 				if (flag == true) {
 					ServletUtility.forward(getView(), request, response);
 
 				} else {
-					ServletUtility.redirect(ORSView.ERROR_CTL, request, response);
+					ServletUtility.redirect(ORSView.FORGET_PASSWORD_CTL, request, response);
 					return;
 				}
 
 			} catch (RecordNotFoundException e) {
+				ServletUtility.setDto(dto, request);
 				ServletUtility.setErrorMessage(e.getMessage(), request);
+				ServletUtility.forward(ORSView.FORGET_PASSWORD_VIEW, request, response);
 				log.error(e);
 			} catch (ApplicationException e) {
 				log.error(e);
@@ -91,7 +94,7 @@ public class ForgetPasswordCtl extends BaseCtl {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			ServletUtility.forward(getView(), request, response);
+			// ServletUtility.forward(getView(), request, response);
 
 		}
 

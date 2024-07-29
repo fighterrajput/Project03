@@ -1,6 +1,7 @@
 package in.co.rays.project_3.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -9,117 +10,83 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import in.co.rays.project_3.dto.BaseDTO;
-import in.co.rays.project_3.dto.EmployeeDTO;
 import in.co.rays.project_3.dto.OrderDTO;
 import in.co.rays.project_3.exception.ApplicationException;
 import in.co.rays.project_3.exception.DuplicateRecordException;
-import in.co.rays.project_3.model.AddressModelInt;
-import in.co.rays.project_3.model.EmployeeModelInt;
 import in.co.rays.project_3.model.ModelFactory;
 import in.co.rays.project_3.model.OrderModelInt;
+import in.co.rays.project_3.model.ProductModelInt;
 import in.co.rays.project_3.model.RoleModelInt;
 import in.co.rays.project_3.util.DataUtility;
 import in.co.rays.project_3.util.DataValidator;
 import in.co.rays.project_3.util.PropertyReader;
 import in.co.rays.project_3.util.ServletUtility;
 
-
 @WebServlet(name = "OrderCtl", urlPatterns = { "/ctl/OrderCtl" })
 public class OrderCtl extends BaseCtl {
-	
-		protected void preload(HttpServletRequest request) {
-			RoleModelInt model = ModelFactory.getInstance().getRoleModel();
-			AddressModelInt model1 = ModelFactory.getInstance().getAddressModel();
-			try {
-				List list = model1.list();
-				request.setAttribute("mt", list);
 
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+	protected void preload(HttpServletRequest request) {
+
+		HashMap map = new HashMap();
+		map.put("Table", "Table");
+		map.put("Bag", "Bag");
+		map.put("Paper", "Paper");
+		map.put("Mobile", "Mobile");
+		map.put("Laptop", "Laptop");
+		map.put("Book", "Book");
+
+		
+		request.setAttribute("productt", map);
+
+	}
+
+	protected boolean validate(HttpServletRequest request) {
+		boolean pass = true;
+
+		if (DataValidator.isNull(request.getParameter("amount"))) {
+			request.setAttribute("amount", PropertyReader.getValue("error.require", " amount"));
+
+			pass = false;
+		} 
+		if (DataValidator.isNull(request.getParameter("quantity"))) {
+			request.setAttribute("quantity", PropertyReader.getValue("error.require", "quantity"));
+			
+			pass = false;
 			
 		}
-protected boolean validate(HttpServletRequest request) {
-	boolean pass = true;
-	
-	if (DataValidator.isNull(request.getParameter("name"))) {
-		request.setAttribute("name", PropertyReader.getValue("error.require", "name"));
+
+			if (DataValidator.isNull(request.getParameter("product"))) {
+				request.setAttribute("product", PropertyReader.getValue("error.require", "product"));
+				pass = false;
+			}
+
+			if (DataValidator.isNull(request.getParameter("date"))) {
+				request.setAttribute("date", PropertyReader.getValue("error.require", "date"));
+				pass = false;
+
+			}
+
 		
-		pass = false;
-	} else if (!DataValidator.isName(request.getParameter("name"))) {
-		request.setAttribute("name", " name must contains alphabets only");
-		System.out.println(pass);
-		pass = false;
-
-	}
-	
-	  if (DataValidator.isNull(request.getParameter("orderProduct"))) {
-	  request.setAttribute("orderProduct", PropertyReader.getValue("error.require", "orderProduct"));
-	  pass = false; 
-	  } 
-	  else if(!DataValidator.isName(request.getParameter("orderProduct"))) {
-	  request.setAttribute("orderProduct", "orderProduct must contains alphabets only");
-	  System.out.println(pass); pass = false;
-	  
-	  }
-	  if (DataValidator.isNull(request.getParameter("address"))) {
-		  request.setAttribute("address", PropertyReader.getValue("error.require", "address"));
-		  pass = false; 
-		  } 
-	
-	  else if(!DataValidator.isName(request.getParameter("address"))) {
-	  request.setAttribute("address", "address must contains alphabets only"); 
-	  System.out.println(pass);
-	  pass = false;
-	  
-	  }
-	 
-	 		
-	if (!OP_UPDATE.equalsIgnoreCase(request.getParameter("operation"))) {
-	
-	
-	
-	if (DataValidator.isNull(request.getParameter("dob"))) {
-		request.setAttribute("dob", PropertyReader.getValue("error.require", "dob"));
-		pass = false;
-	
+		return pass;
 	}
 
-			/*
-			 * else if(!DataValidator.isName(request.getParameter("dob"))) {
-			 * request.setAttribute("dob", "dob must contains  only");
-			 * System.out.println(pass); pass = false;
-			 * 
-			 * }
-			 */
+	protected BaseDTO populateDTO(HttpServletRequest request) {
+		OrderDTO dto = new OrderDTO();
+
+		System.out.println(request.getParameter("dob"));
+
+		dto.setId(DataUtility.getLong(request.getParameter("id")));
+		dto.setAmount(DataUtility.getLong(request.getParameter("amount")));
+		dto.setQuantity(DataUtility.getInt(request.getParameter("quantity")));
+		dto.setProduct(DataUtility.getString(request.getParameter("product")));
+		dto.setDate(DataUtility.getDate(request.getParameter("date")));
+
+		populateBean(dto, request);
+
+		return dto;
+
 	}
-	
-	return pass;
 
-
-}
-    protected BaseDTO populateDTO(HttpServletRequest request) {
-	     OrderDTO dto = new OrderDTO();
-	
-     
-
-	dto.setId(DataUtility.getLong(request.getParameter("id")));
-
-//	dto.setRoleId(DataUtility.getLong(request.getParameter("role")));
-	dto.setName(DataUtility.getString(request.getParameter("name")));
-
-	dto.setOrderProduct(DataUtility.getString(request.getParameter("orderProduct")));
-	dto.setAddress(DataUtility.getString(request.getParameter("address")));
-	dto.setDob(DataUtility.getDate(request.getParameter("dob")));
-
-
-    
-	populateBean(dto,request);
-	
-
-	return dto;
-    }
-	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		String op = DataUtility.getString(request.getParameter("operation"));
@@ -138,23 +105,24 @@ protected boolean validate(HttpServletRequest request) {
 		}
 		ServletUtility.forward(getView(), request, response);
 	}
-	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
 		String op = DataUtility.getString(request.getParameter("operation"));
-          OrderModelInt model = ModelFactory.getInstance().getOrderModel();
+		OrderModelInt model = ModelFactory.getInstance().getOrderModel();
 		long id = DataUtility.getLong(request.getParameter("id"));
-		if (OP_SAVE.equalsIgnoreCase(op)||OP_UPDATE.equalsIgnoreCase(op)) {
+		if (OP_SAVE.equalsIgnoreCase(op) || OP_UPDATE.equalsIgnoreCase(op)) {
 			OrderDTO dto = (OrderDTO) populateDTO(request);
 			try {
 				if (id > 0) {
 					model.update(dto);
-					
+
 					ServletUtility.setSuccessMessage("Data is successfully Update", request);
 				} else {
-					
+
 					try {
-						 model.add(dto);
-						 ServletUtility.setDto(dto, request);
+						model.add(dto);
+						ServletUtility.setDto(dto, request);
 						ServletUtility.setSuccessMessage("Data is successfully saved", request);
 					} catch (ApplicationException e) {
 						ServletUtility.handleException(e, request, response);
@@ -166,8 +134,7 @@ protected boolean validate(HttpServletRequest request) {
 
 				}
 				ServletUtility.setDto(dto, request);
-				
-				
+
 			} catch (ApplicationException e) {
 				ServletUtility.handleException(e, request, response);
 				return;
@@ -200,7 +167,7 @@ protected boolean validate(HttpServletRequest request) {
 
 	}
 
-
+	@Override
 	protected String getView() {
 		// TODO Auto-generated method stub
 		return ORSView.ORDER_VIEW;

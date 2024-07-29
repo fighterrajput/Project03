@@ -1,8 +1,7 @@
 package in.co.rays.project_3.dto;
 
 /**
- * Subject JavaDto encapsulates subject attributes
- * 
+ * subject JavaDto encapsulates subject attributes
  * @author Ankit Rajput
  *
  */

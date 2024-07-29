@@ -14,40 +14,42 @@ import in.co.rays.project_3.exception.ApplicationException;
 import in.co.rays.project_3.exception.DuplicateRecordException;
 import in.co.rays.project_3.util.HibDataSource;
 
-public class PatientModelHibImp implements PatientModeInt{
+public class PatientModelHibImp implements PatientModelInt{
 	
-	
+	@Override
 	public long add(PatientDTO dto) throws ApplicationException, DuplicateRecordException {
-
-
-		PatientDTO existDto = null;
 		
-		Session session = HibDataSource.getSession();
-		Transaction tx = null;
-		try {
+		 PatientDTO existDto = null;
+			
+			Session session = HibDataSource.getSession();
+			Transaction tx = null;
+			try {
 
-			tx = session.beginTransaction();
+				tx = session.beginTransaction();
 
-			session.save(dto);
+				session.save(dto);
 
-			dto.getId();
-			tx.commit();
-		} catch (HibernateException e) {
-			e.printStackTrace();
-			if (tx != null) {
-				tx.rollback();
+				dto.getId();
+				tx.commit();
+			} catch (HibernateException e) {
+				e.printStackTrace();
+				if (tx != null) {
+					tx.rollback();
 
+				}
+				throw new ApplicationException("Exception in Order Add " + e.getMessage());
+			} finally {
+				session.close();
 			}
-			throw new ApplicationException("Exception in Employee Add " + e.getMessage());
-		} finally {
-			session.close();
-		}
-		return dto.getId();
 
+		
+		return dto.getId();
 	}
 
-	
+	@Override
 	public void delete(PatientDTO dto) throws ApplicationException {
+		
+		
 		Session session = null;
 		Transaction tx = null;
 		try {
@@ -59,14 +61,16 @@ public class PatientModelHibImp implements PatientModeInt{
 			if (tx != null) {
 				tx.rollback();
 			}
-			throw new ApplicationException("Exception in Employee Delete" + e.getMessage());
+			throw new ApplicationException("Exception in Order Delete" + e.getMessage());
 		} finally {
 			session.close();
 		}
+
 	}
 
-
+	@Override
 	public void update(PatientDTO dto) throws ApplicationException, DuplicateRecordException {
+
 		Session session = null;
 		
 		Transaction tx = null;
@@ -80,15 +84,15 @@ public class PatientModelHibImp implements PatientModeInt{
 			if (tx != null) {
 				tx.rollback();
 			}
-			throw new ApplicationException("Exception in Employee update" + e.getMessage());
+			throw new ApplicationException("Exception in Order update" + e.getMessage());
 		} finally {
 			session.close();
 		}
 	}
 
-	
-
+	@Override
 	public PatientDTO findByPK(long pk) throws ApplicationException {
+		
 		Session session = null;
 		PatientDTO dto = null;
 		try {
@@ -96,17 +100,19 @@ public class PatientModelHibImp implements PatientModeInt{
 			dto = (PatientDTO) session.get(PatientDTO.class, pk);
 
 		} catch (HibernateException e) {
-			throw new ApplicationException("Exception : Exception in getting Employee by pk");
+			throw new ApplicationException("Exception : Exception in getting Product by pk");
 		} finally {
 			session.close();
 		}
 
+
 		return dto;
 	}
 
-	
-
+	@Override
 	public PatientDTO findByLogin(String login) throws ApplicationException {
+		
+		
 		Session session = null;
 		PatientDTO dto = null;
 		try {
@@ -119,7 +125,7 @@ public class PatientModelHibImp implements PatientModeInt{
 			}
 		} catch (HibernateException e) {
 			e.printStackTrace();
-			throw new ApplicationException("Exception in getting Employee by Login " + e.getMessage());
+			throw new ApplicationException("Exception in getting Order by Login " + e.getMessage());
 
 		} finally {
 			session.close();
@@ -128,15 +134,16 @@ public class PatientModelHibImp implements PatientModeInt{
 		return dto;
 	}
 
-	
+	@Override
 	public List list() throws ApplicationException {
-		return list(0, 0);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	
-
+	@Override
 	public List list(int pageNo, int pageSize) throws ApplicationException {
-		// TODO Auto-generated method stub
+		
+
 		Session session = null;
 		List list = null;
 		try {
@@ -151,7 +158,7 @@ public class PatientModelHibImp implements PatientModeInt{
 			list = criteria.list();
 
 		} catch (HibernateException e) {
-			throw new ApplicationException("Exception : Exception in  Employees list");
+			throw new ApplicationException("Exception : Exception in  Order list");
 		} finally {
 			session.close();
 		}
@@ -159,16 +166,9 @@ public class PatientModelHibImp implements PatientModeInt{
 		return list;
 	}
 
-	
-	public List search(PatientDTO dto) throws ApplicationException {
-		// TODO Auto-generated method stub
-		return search(dto, 0, 0);
-	}
-
-	
+	@Override
 	public List search(PatientDTO dto, int pageNo, int pageSize) throws ApplicationException {
-		// TODO Auto-generated method stub
-
+		
 		Session session = null;
 		ArrayList<PatientDTO> list = null;
 		try {
@@ -181,30 +181,22 @@ public class PatientModelHibImp implements PatientModeInt{
 				if (dto.getName() != null && dto.getName().length() > 0) {
 					criteria.add(Restrictions.like("name", dto.getName() + "%"));
 				}
-				
-				/*
-				 * if (dto.getDateOfVisit != null && dto.getDateOfVisit().getTime() > 0) {
-				 * criteria.add(Restrictions.like("salary", getDateOfVisit) + "%")); }
-				 */
-
-				  if (dto.getMobile() != null ) {
-				  criteria.add(Restrictions.eq("mobile", dto.getMobile() ));
-				  }
-				  
-				
-				
-				  if (dto.getDecease() != null && dto.getDecease().length() > 0) {
-				  criteria.add(Restrictions.eq("decease", dto.getDecease())); }
-				 
-				
-				if (dto.getDateOfVisit() != null && dto.getDateOfVisit().getTime() > 0) {
-					criteria.add(Restrictions.eq("dateOfVisit", dto.getDateOfVisit()));
-				}
-				
-				
+								
+				 if (dto.getDateOfVisit() != null && dto.getDateOfVisit().getTime() > 0) {
+						criteria.add(Restrictions.eq("dateOfVisit", dto.getDateOfVisit()));
+					}
+					 if (dto.getMobile() != null && dto.getMobile().length() > 0) {
+							criteria.add(Restrictions.like("mobile", dto.getMobile() + "%"));
+						}
+					 
+					 if (dto.getDisease() != null && dto.getDisease().length() > 0) {
+							criteria.add(Restrictions.like("disease", dto.getDisease() + "%"));
+						}
+			   
+			  
 			}
 			
-			
+			System.out.println("searchcalll");
 			if (pageSize > 0) {
 				pageNo = (pageNo - 1) * pageSize;
 				criteria.setFirstResult(pageNo);
@@ -212,23 +204,34 @@ public class PatientModelHibImp implements PatientModeInt{
 			}
 			list = (ArrayList<PatientDTO>) criteria.list();
 		} catch (HibernateException e) {
-			throw new ApplicationException("Exception in Employee search");
+			throw new ApplicationException("Exception in Order search");
 		} finally {
 			session.close();
 		}
 
+
+		
 		return list;
 	}
 
-	
-
-	public List getRoles(PatientDTO dto) throws ApplicationException {
+	@Override
+	public List search(PatientDTO dto) throws ApplicationException {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-
-
+	@Override
+	public List getRoles(PatientDTO dto) throws ApplicationException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
+
+
+
+
+
+
 
 }

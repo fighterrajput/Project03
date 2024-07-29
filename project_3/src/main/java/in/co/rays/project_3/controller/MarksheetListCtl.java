@@ -20,10 +20,10 @@ import in.co.rays.project_3.util.PropertyReader;
 import in.co.rays.project_3.util.ServletUtility;
 
 /**
- * Marksheet functionality ctl.to show list of marksheet
+ * marksheet functionality ctl.to show list of marksheet
  * @author Ankit Rajput
  *
- */
+ */ 
 @WebServlet(name = "MarksheetListCtl", urlPatterns = { "/ctl/MarksheetListCtl" })
 public class MarksheetListCtl extends BaseCtl {
 

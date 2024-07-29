@@ -2,7 +2,6 @@ package in.co.rays.project_3.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -10,23 +9,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-
 import in.co.rays.project_3.dto.BankDTO;
 import in.co.rays.project_3.dto.BaseDTO;
-import in.co.rays.project_3.dto.BankDTO;
 import in.co.rays.project_3.exception.ApplicationException;
+import in.co.rays.project_3.model.BankModelInt;
 import in.co.rays.project_3.model.ModelFactory;
 import in.co.rays.project_3.model.RoleModelInt;
-import in.co.rays.project_3.model.BankModelInt;
 import in.co.rays.project_3.util.DataUtility;
 import in.co.rays.project_3.util.PropertyReader;
 import in.co.rays.project_3.util.ServletUtility;
-
-@WebServlet(name = " BankListCtl", urlPatterns = { "/ctl/BankListCtl" })
-public class BankListCtl extends BaseCtl {
-
-
+@WebServlet(name = "BankListCtl", urlPatterns = { "/ctl/BankListCtl" })
+public class BankListCtl extends BaseCtl{
+	
 	protected void preload(HttpServletRequest request) {
 		RoleModelInt model = ModelFactory.getInstance().getRoleModel();
 		BankModelInt bmodel = ModelFactory.getInstance().getBankModel();
@@ -44,14 +38,8 @@ public class BankListCtl extends BaseCtl {
 		BankDTO dto = new BankDTO();
 
 		dto.setName(DataUtility.getString(request.getParameter("name")));
-		// dto.setName(DataUtility.getString(request.getParameter("nname")));
-
-		// dto.setLastName(DataUtility.getString(request.getParameter("lastName")));
-		// dto.setDob(DataUtility.getDate(request.getParameter("dob")));
-		 dto.setId(DataUtility.getLong(request.getParameter("ddob")));
-
-		dto.setAccountNumber(DataUtility.getString(request.getParameter("accountNumber")));
-		// dto.setRoleId(DataUtility.getLong(request.getParameter("Role")));
+        dto.setDob(DataUtility.getDate(request.getParameter("dob")));
+        dto.setAccountNumber(DataUtility.getString(request.getParameter("accountNumber")));
 		dto.setAddress(DataUtility.getString(request.getParameter("address")));
 
 		populateBean(dto, request);
@@ -71,7 +59,7 @@ public class BankListCtl extends BaseCtl {
 		try {
 			list = model.search(dto, pageNo, pageSize);
 
-			ArrayList<BankDTO> a = (ArrayList<BankDTO>) list;
+			ArrayList a = (ArrayList<BankDTO>) list;
 
 			next = model.search(dto, pageNo + 1, pageSize);
 			ServletUtility.setList(list, request);
@@ -182,9 +170,9 @@ public class BankListCtl extends BaseCtl {
 		}
 	}
 
+
 	@Override
 	protected String getView() {
 		return ORSView.BANK_LIST_VIEW;
 	}
-
 }

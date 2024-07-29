@@ -2,6 +2,7 @@ package in.co.rays.project_3.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -11,65 +12,63 @@ import javax.servlet.http.HttpServletResponse;
 
 import in.co.rays.project_3.dto.BaseDTO;
 import in.co.rays.project_3.dto.PatientDTO;
-import in.co.rays.project_3.dto.PatientDTO;
 import in.co.rays.project_3.exception.ApplicationException;
-import in.co.rays.project_3.model.DesceaseModeInt;
 import in.co.rays.project_3.model.ModelFactory;
-import in.co.rays.project_3.model.PatientModeInt;
+
+import in.co.rays.project_3.model.PatientModelInt;
 import in.co.rays.project_3.util.DataUtility;
-import in.co.rays.project_3.util.DataValidator;
 import in.co.rays.project_3.util.PropertyReader;
 import in.co.rays.project_3.util.ServletUtility;
 
 @WebServlet(name = "PatientListCtl", urlPatterns = { "/ctl/PatientListCtl" })
-public class PatientListCtl extends BaseCtl {
 
+public class PatientListCtl extends BaseCtl{
+	
 	@Override
 	protected void preload(HttpServletRequest request) {
-		DesceaseModeInt model = ModelFactory.getInstance().getDesceaseModel();
-		PatientModeInt bmodel = ModelFactory.getInstance().getPatientModel();
+		
+		HashMap map = new HashMap();
+		map.put("Chickenpox", "Chickenpox");
+		map.put("Malaria", "Malaria");
+		map.put("YellowFever", "YellowFever");
+		map.put("AIDS", "AIDS");
+		map.put("Tuberculosis", "Tuberculosis");
+	
 
-		try {
-			List list = model.list(0, 0);
-			request.setAttribute("mt", list);
-		} catch (Exception e) {
+		
+		request.setAttribute("diseasee", map);
+		
+		 	}
 
-		}
-	}
-
+	
+	
 	@Override
 	protected BaseDTO populateDTO(HttpServletRequest request) {
-
 		PatientDTO dto = new PatientDTO();
 
 		dto.setName(DataUtility.getString(request.getParameter("name")));
-		dto.setDateOfVisit(DataUtility.getDate(request.getParameter("dateOfVisit")));
-
-		// dto.setId(DataUtility.getLong(request.getParameter("ddob")));
-
+		dto.setDisease(DataUtility.getString(request.getParameter("disease")));
 		dto.setMobile(DataUtility.getString(request.getParameter("mobile")));
-		dto.setDecease(DataUtility.getString(request.getParameter("decease")));
+
+        dto.setDateOfVisit(DataUtility.getDate(request.getParameter("dateOfVisit")));
 
 		populateBean(dto, request);
 		return dto;
-
 	}
 
-	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		List list;
 		List next;
 		int pageNo = 1;
 		int pageSize = DataUtility.getInt(PropertyReader.getValue("page.size"));
 		PatientDTO dto = (PatientDTO) populateDTO(request);
 
-		PatientModeInt model = ModelFactory.getInstance().getPatientModel();
+		PatientModelInt model = ModelFactory.getInstance().getPatientModel();
 		try {
 			list = model.search(dto, pageNo, pageSize);
 
-			ArrayList<PatientDTO> a = (ArrayList<PatientDTO>) list;
+			ArrayList a = (ArrayList<PatientDTO>) list;
 
 			next = model.search(dto, pageNo + 1, pageSize);
 			ServletUtility.setList(list, request);
@@ -90,7 +89,6 @@ public class PatientListCtl extends BaseCtl {
 			ServletUtility.handleException(e, request, response);
 			return;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -98,7 +96,6 @@ public class PatientListCtl extends BaseCtl {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		List list = null;
 		List next = null;
 		int pageNo = DataUtility.getInt(request.getParameter("pageNo"));
@@ -110,10 +107,16 @@ public class PatientListCtl extends BaseCtl {
 		String op = DataUtility.getString(request.getParameter("operation"));
 
 		String[] ids = request.getParameterValues("ids");
-		PatientModeInt model = ModelFactory.getInstance().getPatientModel();
+		PatientModelInt model = ModelFactory.getInstance().getPatientModel();
 		try {
 
 			if (OP_SEARCH.equalsIgnoreCase(op) || "Next".equalsIgnoreCase(op) || "Previous".equalsIgnoreCase(op)) {
+
+				if (request.getParameter("name").equals("") && request.getParameter("disease").equals("")
+						&& request.getParameter("mobile").equals("")
+						&& request.getParameter("dateOfVisit").equals("")) {
+					ServletUtility.setErrorMessage("fill  at least one field", request);
+				}
 
 				if (OP_SEARCH.equalsIgnoreCase(op)) {
 
@@ -176,10 +179,8 @@ public class PatientListCtl extends BaseCtl {
 			ServletUtility.handleException(e, request, response);
 			return;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
 	@Override
@@ -187,5 +188,6 @@ public class PatientListCtl extends BaseCtl {
 		// TODO Auto-generated method stub
 		return ORSView.PATIENT_LIST_VIEW;
 	}
+
 
 }

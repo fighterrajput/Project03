@@ -20,16 +20,14 @@ import in.co.rays.project_3.util.PropertyReader;
 import in.co.rays.project_3.util.ServletUtility;
 
 /**
- * College functionality ctl. To perform add,delete ,update operation
+ * college functionality ctl. To perform add,delete ,update operation
  * @author Ankit Rajput
- *
+ * 
  */
 
 @WebServlet(urlPatterns = { "/ctl/CollegeCtl" })
 public class CollegeCtl extends BaseCtl {
-	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
-	/** The log. */
 	private static Logger log = Logger.getLogger(CollegeCtl.class);
 
 	protected boolean validate(HttpServletRequest request) {
@@ -87,14 +85,7 @@ public class CollegeCtl extends BaseCtl {
 		populateBean(dto,request);
 		return dto;
 	}
-	/**
-	 * Contains Display logic.
-	 *
-	 * @param request the request
-	 * @param response the response
-	 * @throws ServletException the servlet exception
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String op = request.getParameter("operation");
 		long id = DataUtility.getLong(request.getParameter("id"));
@@ -114,15 +105,6 @@ public class CollegeCtl extends BaseCtl {
 		}
 		ServletUtility.forward(getView(), request, response);
 	}
-
-	/**
-	 * Contains Submit logics.
-	 *
-	 * @param request the request
-	 * @param response the response
-	 * @throws ServletException the servlet exception
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
        

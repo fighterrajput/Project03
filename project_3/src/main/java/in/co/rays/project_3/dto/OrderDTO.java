@@ -2,49 +2,61 @@ package in.co.rays.project_3.dto;
 
 import java.util.Date;
 
-public class OrderDTO  extends BaseDTO {
+import in.co.rays.project_3.controller.BaseCtl;
 
-	private String name;
-	private String  orderProduct;
-	private String address;
-	private Date dob;
+public class OrderDTO extends BaseDTO {
 
+	private long amount;
+	private int quantity;
+	private String product;
+	private Date date;
+
+
+	public long getAmount() {
+		return amount;
+	}
+
+	public void setAmount(long amount) {
+		this.amount = amount;
+	}
 
 	
-	public String getName() {
-		return name;
+
+	
+	public int getQuantity() {
+		return quantity;
 	}
-	public void setName(String name) {
-		this.name = name;
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
-	public String getOrderProduct() {
-		return orderProduct;
+
+	public String getProduct() {
+		return product;
 	}
-	public void setOrderProduct(String orderProduct) {
-		this.orderProduct = orderProduct;
+
+	public void setProduct(String product) {
+		this.product = product;
 	}
-	public String getAddress() {
-		return address;
+
+	public Date getDate() {
+		return date;
 	}
-	public void setAddress(String address) {
-		this.address = address;
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
-	public Date getDob() {
-		return dob;
-	}
-	public void setDob(Date dob) {
-		this.dob = dob;
-	}
+
 	@Override
 	public String getKey() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 	@Override
 	public String getValue() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
+
 }

@@ -2,7 +2,6 @@ package in.co.rays.project_3.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -10,48 +9,39 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-
-import in.co.rays.project_3.dto.EmployeeDTO;
 import in.co.rays.project_3.dto.BaseDTO;
 import in.co.rays.project_3.dto.EmployeeDTO;
 import in.co.rays.project_3.exception.ApplicationException;
+import in.co.rays.project_3.model.EmployeeModelInt;
 import in.co.rays.project_3.model.ModelFactory;
 import in.co.rays.project_3.model.RoleModelInt;
-import in.co.rays.project_3.model.EmployeeModelInt;
 import in.co.rays.project_3.util.DataUtility;
 import in.co.rays.project_3.util.PropertyReader;
 import in.co.rays.project_3.util.ServletUtility;
 
-@WebServlet(name = " EmployeeListCtl", urlPatterns = { "/ctl/EmployeeListCtl" })
+@WebServlet(name="EmployeeListCtl" ,urlPatterns = "/ctl/EmployeeListCtl")
 public class EmployeeListCtl extends BaseCtl {
-
-
-	protected void preload(HttpServletRequest request) {
-		RoleModelInt model = ModelFactory.getInstance().getRoleModel();
-		EmployeeModelInt bmodel = ModelFactory.getInstance().getEmployeeModel();
-
-		try {
-			List list = bmodel.list(0, 0);
-			request.setAttribute("nameList", list);
-		} catch (Exception e) {
-
-		}
-	}
-
+	
+	/*
+	 * protected void preload(HttpServletRequest request) { RoleModelInt model =
+	 * ModelFactory.getInstance().getRoleModel(); EmployeeModelInt bmodel =
+	 * ModelFactory.getInstance().getEmployeeModel();
+	 * 
+	 * try { List list = bmodel.list(0, 0); request.setAttribute("nameList", list);
+	 * } catch (Exception e) {
+	 * 
+	 * } }
+	 */
 	@Override
 	protected BaseDTO populateDTO(HttpServletRequest request) {
 		EmployeeDTO dto = new EmployeeDTO();
 
 		dto.setName(DataUtility.getString(request.getParameter("name")));
-		// dto.setName(DataUtility.getString(request.getParameter("nname")));
-
-		 dto.setDob(DataUtility.getDate(request.getParameter("dob")));
-		// dto.setId(DataUtility.getLong(request.getParameter("ddob")));
-
-		dto.setAccountNumber(DataUtility.getString(request.getParameter("accountNumber")));
-		dto.setStatus(DataUtility.getString(request.getParameter("status")));
 		dto.setSalary(DataUtility.getString(request.getParameter("salary")));
+        dto.setAccountNumber(DataUtility.getString(request.getParameter("accountNumber")));
+		dto.setStatus(DataUtility.getString(request.getParameter("status")));
+		 dto.setDob(DataUtility.getDate(request.getParameter("dob")));
+
 
 		populateBean(dto, request);
 		return dto;
@@ -70,7 +60,7 @@ public class EmployeeListCtl extends BaseCtl {
 		try {
 			list = model.search(dto, pageNo, pageSize);
 
-			ArrayList<EmployeeDTO> a = (ArrayList<EmployeeDTO>) list;
+			ArrayList a = (ArrayList<EmployeeDTO>) list;
 
 			next = model.search(dto, pageNo + 1, pageSize);
 			ServletUtility.setList(list, request);
@@ -125,11 +115,11 @@ public class EmployeeListCtl extends BaseCtl {
 				}
 
 			} else if (OP_NEW.equalsIgnoreCase(op)) {
-				ServletUtility.redirect(ORSView.Employee_CTL, request, response);
+				ServletUtility.redirect(ORSView.EMPLOYEE_CTL, request, response);
 				return;
 			} else if (OP_RESET.equalsIgnoreCase(op)) {
 
-				ServletUtility.redirect(ORSView.Employee_LIST_CTL, request, response);
+				ServletUtility.redirect(ORSView.EMPLOYEE_LIST_CTL, request, response);
 				return;
 			} else if (OP_DELETE.equalsIgnoreCase(op)) {
 				pageNo = 1;
@@ -145,7 +135,7 @@ public class EmployeeListCtl extends BaseCtl {
 				}
 			}
 			if (OP_BACK.equalsIgnoreCase(op)) {
-				ServletUtility.redirect(ORSView.Employee_LIST_CTL, request, response);
+				ServletUtility.redirect(ORSView.EMPLOYEE_LIST_CTL, request, response);
 				return;
 			}
 			dto = (EmployeeDTO) populateDTO(request);
@@ -181,9 +171,10 @@ public class EmployeeListCtl extends BaseCtl {
 		}
 	}
 
+
+
 	@Override
 	protected String getView() {
-		return ORSView.Employee_LIST_VIEW;
+		return ORSView.EMPLOYEE_LIST_VIEW;
 	}
-
 }

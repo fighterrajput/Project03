@@ -18,7 +18,7 @@ public abstract class RoleModelTest {
 public static RoleModelInt model=new RoleModelHibImp();
 //public static RoleModelInt model=new RoleModelJDBCImpl;
 public static void main(String[] args) throws Exception {
-	addTest();
+	  addTest();
 	//deleteTest();
 	//updateTest();
 	//findByPkTest();
@@ -57,8 +57,8 @@ public static void updateTest() throws ApplicationException, DuplicateRecordExce
 	dto.setId(1L);
 	dto.setName("admin");
 	dto.setDescription("Administrator");
-	dto.setCreatedBy("admin");
-	dto.setModifiedBy("admin");
+	dto.setCreatedBy("Admin");
+	dto.setModifiedBy("Admin");
 	dto.setCreatedDatetime(new Timestamp(new Date().getTime()));
 	dto.setModifiedDatetime(new Timestamp(new Date().getTime()));
 	model.update(dto);
@@ -79,8 +79,8 @@ public static void addTest() throws Exception{
 	RoleDTO dto=new RoleDTO();
 	dto.setName("Student");
 	dto.setDescription("Student panel");
-	dto.setCreatedBy("Ankit Rajputkanoongo493@gmail.com");
-	dto.setModifiedBy("Ankit Rajputkanoongo493@gmail.com");
+	dto.setCreatedBy("yashkanoongo493@gmail.com");
+	dto.setModifiedBy("yashkanoongo493@gmail.com");
 	dto.setCreatedDatetime(new Timestamp(new Date().getTime()));
 	dto.setModifiedDatetime(new Timestamp(new Date().getTime()));
 	System.out.println("ROle Add");

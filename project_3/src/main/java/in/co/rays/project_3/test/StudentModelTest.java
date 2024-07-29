@@ -19,7 +19,7 @@ public class StudentModelTest {
 	/* public static StudentModelInt model = new StudentModelJDBCImpl(); */
 	public static StudentModelInt model = new StudentModelHibImp();
 	public static void main(String[] args) throws Exception {
-		/* addTest(); */
+		 addTest(); 
 		/* deleteTest(); */
 		/* updateTest(); */ 
 		/* findByPkTest(); */

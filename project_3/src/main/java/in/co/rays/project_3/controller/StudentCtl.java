@@ -23,7 +23,7 @@ import in.co.rays.project_3.util.PropertyReader;
 import in.co.rays.project_3.util.ServletUtility;
 
 /**
- * Student functionality CRUD operation
+ * student functionality CRUD opration
  * @author Ankit Rajput
  *
  */

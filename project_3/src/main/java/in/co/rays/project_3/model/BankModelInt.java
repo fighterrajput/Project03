@@ -5,10 +5,9 @@ import java.util.List;
 import in.co.rays.project_3.dto.BankDTO;
 import in.co.rays.project_3.exception.ApplicationException;
 import in.co.rays.project_3.exception.DuplicateRecordException;
-import in.co.rays.project_3.exception.RecordNotFoundException;
 
-
-public interface BankModelInt  {
+public interface BankModelInt {
+	
 	public long add(BankDTO dto)throws ApplicationException,DuplicateRecordException;
 	public void delete(BankDTO dto)throws ApplicationException;
 	public void update(BankDTO dto)throws ApplicationException,DuplicateRecordException;
@@ -20,9 +19,6 @@ public interface BankModelInt  {
 	public List search(BankDTO dto)throws ApplicationException;
 	public List getRoles(BankDTO dto)throws ApplicationException;
 	
-	
-	
 
-	
 
 }

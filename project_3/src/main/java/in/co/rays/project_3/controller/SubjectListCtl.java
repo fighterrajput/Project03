@@ -21,8 +21,8 @@ import in.co.rays.project_3.util.PropertyReader;
 import in.co.rays.project_3.util.ServletUtility;
 
 /**
- * Subject functionality controller.perfrom search and show list operation
-* @author Ankit Rajput
+ * subject functionality controller.perfrom search and show list operation
+ * @author Ankit Rajput
  *
  */
 @WebServlet(name = "SubjectListCtl", urlPatterns = { "/ctl/SubjectListCtl" })

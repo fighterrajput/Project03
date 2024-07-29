@@ -1,7 +1,7 @@
 package in.co.rays.project_3.controller;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,106 +12,111 @@ import in.co.rays.project_3.dto.BaseDTO;
 import in.co.rays.project_3.dto.PatientDTO;
 import in.co.rays.project_3.exception.ApplicationException;
 import in.co.rays.project_3.exception.DuplicateRecordException;
-import in.co.rays.project_3.model.DesceaseModeInt;
 import in.co.rays.project_3.model.ModelFactory;
-import in.co.rays.project_3.model.PatientModeInt;
-import in.co.rays.project_3.model.ProductModelInt;
-import in.co.rays.project_3.model.TypeModelInt;
+import in.co.rays.project_3.model.OwnerModelInt;
+import in.co.rays.project_3.model.PatientModelInt;
 import in.co.rays.project_3.util.DataUtility;
 import in.co.rays.project_3.util.DataValidator;
 import in.co.rays.project_3.util.PropertyReader;
 import in.co.rays.project_3.util.ServletUtility;
 
 @WebServlet(name = "PatientCtl", urlPatterns = { "/ctl/PatientCtl" })
-public class PatientCtl extends BaseCtl {
 
+public class PatientCtl  extends BaseCtl {
+	
 	@Override
 	protected void preload(HttpServletRequest request) {
+		
+		HashMap map = new HashMap();
+		map.put("Chickenpox", "Chickenpox");
+		map.put("Malaria", "Malaria");
+		map.put("YellowFever", "YellowFever");
+		map.put("AIDS", "AIDS");
+		map.put("Tuberculosis", "Tuberculosis");
+	
 
-		ProductModelInt model = ModelFactory.getInstance().getProductModel();
-		DesceaseModeInt model1 = ModelFactory.getInstance().getDesceaseModel();
-		try {
-			List list = model1.list();
-			request.setAttribute("mt", list);
+		
+		request.setAttribute("diseasee", map);
+		
+		 	}
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	@Override
+	
 	protected boolean validate(HttpServletRequest request) {
-
 		boolean pass = true;
 
 		if (DataValidator.isNull(request.getParameter("name"))) {
-			request.setAttribute("name", PropertyReader.getValue("error.require", " name"));
-
+			request.setAttribute("name", PropertyReader.getValue("error.require", "name"));
 			pass = false;
-		} else if (!DataValidator.isName(request.getParameter("name"))) {
-			request.setAttribute("name", " name must contains alphabets only");
-			System.out.println(pass);
-			pass = false;
-
 		}
+
+		
+			
 
 		if (DataValidator.isNull(request.getParameter("dateOfVisit"))) {
 			request.setAttribute("dateOfVisit", PropertyReader.getValue("error.require", " dateOfVisit"));
 
 			pass = false;
-		} else if (!DataValidator.isDate(request.getParameter("dateOfVisit"))) {
-			request.setAttribute("dateOfVisit", "dateOfVisit must contains Digit only");
-			System.out.println(pass);
-			pass = false;
+		
 
 		}
-
 		if (DataValidator.isNull(request.getParameter("mobile"))) {
-			request.setAttribute("mobile", PropertyReader.getValue("error.require", " mobile"));
-
+			request.setAttribute("mobile", PropertyReader.getValue("error.require", "mobile"));
+			pass = false;
+		} else if (!DataValidator.isMobileNo(request.getParameter("mobile"))) {
+			request.setAttribute("mobile", "Mobile No. Series start with 6-9 ");
+			if (!DataValidator.isPhoneLength(request.getParameter("mobile"))) {
+				request.setAttribute("mobile", "mobile No.must be 10 digit ");
+			}
 			pass = false;
 		}
 		
-		else if (!DataValidator.isPhoneNo(request.getParameter("mobile"))) {
-			request.setAttribute("mobile", "mobile must contains Digit only");
-			pass = false;
-		}
-		if (DataValidator.isNull(request.getParameter("decease"))) {
-			request.setAttribute("decease", PropertyReader.getValue("error.require", " decease"));
+	else if (!DataValidator.isPhoneLength(request.getParameter("mobile"))) {
+		request.setAttribute("mobile", "mobile No.must be 10 digit ");
+		
+		
+		pass = false;
+	}
 
+		
+
+				  
+		
+		if (DataValidator.isNull(request.getParameter("disease"))) {
+			request.setAttribute("disease", PropertyReader.getValue("error.require", "disease"));
 			pass = false;
 		}
+
+		
+
+		 
 
 		return pass;
 
 	}
 
-	@Override
 	protected BaseDTO populateDTO(HttpServletRequest request) {
-
 		PatientDTO dto = new PatientDTO();
 
+
 		dto.setId(DataUtility.getLong(request.getParameter("id")));
-
 		dto.setName(DataUtility.getString(request.getParameter("name")));
-		dto.setDateOfVisit(DataUtility.getDate(request.getParameter("dateOfVisit")));
-
+		dto.setDisease(DataUtility.getString(request.getParameter("disease")));
 		dto.setMobile(DataUtility.getString(request.getParameter("mobile")));
 
-		dto.setDecease(DataUtility.getString(request.getParameter("decease")));
+        dto.setDateOfVisit(DataUtility.getDate(request.getParameter("dateOfVisit")));
+
+
 
 		populateBean(dto, request);
 
 		return dto;
+
 	}
 
-	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
+			throws IOException, ServletException {
 		String op = DataUtility.getString(request.getParameter("operation"));
-		PatientModeInt model = ModelFactory.getInstance().getPatientModel();
+		PatientModelInt model = ModelFactory.getInstance().getPatientModel();
 		long id = DataUtility.getLong(request.getParameter("id"));
 		if (id > 0 || op != null) {
 			PatientDTO dto;
@@ -125,15 +130,12 @@ public class PatientCtl extends BaseCtl {
 			}
 		}
 		ServletUtility.forward(getView(), request, response);
-
 	}
 
-	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
+			throws IOException, ServletException {
 		String op = DataUtility.getString(request.getParameter("operation"));
-		PatientModeInt model = ModelFactory.getInstance().getPatientModel();
+		PatientModelInt model = ModelFactory.getInstance().getPatientModel();
 		long id = DataUtility.getLong(request.getParameter("id"));
 		if (OP_SAVE.equalsIgnoreCase(op) || OP_UPDATE.equalsIgnoreCase(op)) {
 			PatientDTO dto = (PatientDTO) populateDTO(request);
@@ -196,5 +198,6 @@ public class PatientCtl extends BaseCtl {
 		// TODO Auto-generated method stub
 		return ORSView.PATIENT_VIEW;
 	}
+
 
 }

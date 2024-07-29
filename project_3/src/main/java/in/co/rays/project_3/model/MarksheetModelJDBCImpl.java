@@ -60,7 +60,7 @@ public class MarksheetModelJDBCImpl implements MarksheetModelInt {
 	public long add(MarksheetDTO dto) throws ApplicationException, DuplicateRecordException {
 		long pk = 0;
 		Connection conn = null;
-		System.out.println("----kkkkk" + dto);
+		System.out.println("--gggggg" + dto);
 		
 	  /*StudentModelInt sModel = ModelFactory.getInstance().getStudentModel();
 		StudentDTO studentdto = sModel.findByPK(dto.getStudentId());

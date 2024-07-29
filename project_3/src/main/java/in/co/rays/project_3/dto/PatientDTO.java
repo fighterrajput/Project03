@@ -2,12 +2,15 @@ package in.co.rays.project_3.dto;
 
 import java.util.Date;
 
-public class PatientDTO  extends BaseDTO{
-
-	 private String name ;
-	 private Date dateOfVisit ;
-	 private String mobile ;
-	 private String decease ;
+public class PatientDTO extends BaseDTO{
+	
+	private String name;
+	private Date dateOfVisit;
+	private String mobile;
+	private String disease;
+	
+	
+	
 	public String getName() {
 		return name;
 	}
@@ -26,11 +29,11 @@ public class PatientDTO  extends BaseDTO{
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
-	public String getDecease() {
-		return decease;
+	public String getDisease() {
+		return disease;
 	}
-	public void setDecease(String decease) {
-		this.decease = decease;
+	public void setDisease(String disease) {
+		this.disease = disease;
 	}
 	@Override
 	public String getKey() {
@@ -42,4 +45,6 @@ public class PatientDTO  extends BaseDTO{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+
 }

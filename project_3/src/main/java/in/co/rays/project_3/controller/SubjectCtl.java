@@ -23,7 +23,7 @@ import in.co.rays.project_3.util.PropertyReader;
 import in.co.rays.project_3.util.ServletUtility;
 
 /**
- * Subject functionality controller.to perform add,delete and update operation.
+ * subject functionality controller.to perform add,delete and update operation.
  * @author Ankit Rajput
  *
  */

@@ -1,21 +1,18 @@
-<%@page import="in.co.rays.project_3.util.HTMLUtility"%>
-<%@page import="in.co.rays.project_3.dto.OrderDTO"%>
+<%@page import="java.util.HashMap"%>
 <%@page import="in.co.rays.project_3.controller.OrderListCtl"%>
+<%@page import="in.co.rays.project_3.dto.OrderDTO"%>
 <%@page import="java.util.Iterator"%>
+<%@page import="java.util.List"%>
 <%@page import="in.co.rays.project_3.model.ModelFactory"%>
 <%@page import="in.co.rays.project_3.model.RoleModelInt"%>
 <%@page import="in.co.rays.project_3.util.DataUtility"%>
+<%@page import="in.co.rays.project_3.controller.BankListCtl"%>
+<%@page import="in.co.rays.project_3.util.HTMLUtility"%>
 <%@page import="in.co.rays.project_3.util.ServletUtility"%>
-<%@page import="java.util.List"%>
-<%@page import="in.co.rays.project_3.controller.ORSView"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html>
+	pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,7 +22,7 @@
 	src="<%=ORSView.APP_CONTEXT%>/js/CheckBox11.js"></script>
 <style>
 .hm {
-	background-image: url('<%=ORSView.APP_CONTEXT%>/img/pexels-photo-3632630.jpeg');
+	background-image: url('<%=ORSView.APP_CONTEXT%>/img/1234.jpeg');
 	background-size: cover;
 	background-repeat: no-repeate;
 	padding-top: 6%;
@@ -43,11 +40,6 @@
 </style>
 </head>
 
-
-
-</head>
-<body>
-
 <body class="hm">
 	<%@include file="Header.jsp"%>
 	<%@include file="calendar.jsp"%>
@@ -56,9 +48,7 @@
 		<form class="pb-5" action="<%=ORSView.ORDER_LIST_CTL%>" method="post">
 			<jsp:useBean id="dto" class="in.co.rays.project_3.dto.OrderDTO"
 				scope="request"></jsp:useBean>
-			<%
-				List list1 = (List) request.getAttribute("mt");
-			%>
+			
 
 
 			<%
@@ -70,17 +60,21 @@
 				RoleModelInt rmodel = ModelFactory.getInstance().getRoleModel();
 
 				List list = ServletUtility.getList(request);
-  
-				
-				
-		  Iterator<OrderDTO> it = list.iterator();
+
+				Iterator<OrderDTO> it = list.iterator();
 				if (list.size() != 0) {
 			%>
 			<center>
-				<h1 class="text-primary font-weight-bold pt-3">
+				<h1 class="text-secondary font-weight-bold pt-3">
 					<u>Order List</u>
 				</h1>
 			</center>
+			
+				<%
+									HashMap map = (HashMap) request.getAttribute("productt");
+								%>
+
+			
 			<div class="row">
 				<div class="col-md-4"></div>
 				<%
@@ -120,63 +114,67 @@
 			<div class="row">
 
 
-				<!-- <div class="col-sm-2"></div> -->
+				<div class="col-sm-2"></div>
 				<div class="col-sm-2">
-					<input type="text" name="name" placeholder="Enter Name"
-						class="form-control"
-						value="<%=ServletUtility.getParameter("name", request)%>">
+					<input type="text" class="form-control" name=amount
+						placeholder=" Enter InsuranceAmount"
+						oninput="handleIntegerInput(this, 'amountError', 10)"
+						onblur="validateIntegerInput(this, 'amountError', 10)"
+						value="<%=ServletUtility.getParameter("amount", request)%>">
+					<font color="red" class="pl-sm-5" id="amountError"></font>
+
 				</div>
+
+				<div class="col-sm-2">
+					<input type="text" class="form-control" name=quantity
+						placeholder=" Enter Quantity"
+						oninput="handleIntegerInput(this, 'quantityError', 10)"
+						onblur="validateIntegerInput(this, 'quantityError', 10)"
+						value="<%=ServletUtility.getParameter("quantity", request)%>">
+					<font color="red" class="pl-sm-5" id="quantityError"></font>
+
+				</div>
+
 				
-				<div class="col-sm-2">
-					<input type="text" name="orderProduct" placeholder="Enter orderProduct"
-						class="form-control"
-						value="<%=ServletUtility.getParameter("orderProduct", request)%>">
-				</div>
-					&emsp;
-				<div class="col-sm-2"><%=HTMLUtility.getList("address", String.valueOf(dto.getAddress()), list1)%></div>
-				&emsp; 
+				<div class="col-sm-2"><%=HTMLUtility.getList("product", String.valueOf(dto.getProduct()), map)%></div>
+
+				
 
 				&emsp;
 				<div class="col-sm-2">
-					<input type="text" name="dob" placeholder="Enter Date"
-						class="form-control"
-						value="<%=ServletUtility.getParameter("dob", request)%>">
-				</div>
-				<%-- 
-					&emsp;
-				<div class="col-sm-2"><%=HTMLUtility.getList("accountNumber", String.valueOf(dto.getAccountNumber()), list1)%></div>
-				&emsp; --%>
-				
-				<%-- 	&emsp;
-				<div class="col-sm-2"><%=HTMLUtility.getList("ddob", String.valueOf(dto.getDob()), list1)%></div>
-				&emsp; --%>
-				
+					<input type="text" id="datepicker" name="date"
+						class="form-control" placeholder=" Enter Date"
+						readonly="readonly"
+						value="<%=ServletUtility.getParameter("date", request)%>">
 
-				<!-- <div class="col-sm-2"> -->
+				</div>
+				
+				<center>
+				<div class="col-sm-2">
 					<input type="submit" class="btn btn-primary btn-md"
 						style="font-size: 15px" name="operation"
 						value="<%=OrderListCtl.OP_SEARCH%>"> &emsp; <input
 						type="submit" class="btn btn-dark btn-md" style="font-size: 15px"
 						name="operation" value="<%=OrderListCtl.OP_RESET%>">
-				<!-- </div> -->
+				</div>
+</center>
 
-
-				<!-- <div class="col-sm-2"></div> -->
+				<div class="col-sm-2"></div>
 			</div>
 
 			</br>
 			<div style="margin-bottom: 20px;" class="table-responsive">
-				<table class="table table-bOrdered table-dark table-hover">
+				<table class="table table-bordered table-dark table-hover">
 					<thead>
-						<tr style="background-color: blue;">
+						<tr style="background-color: purple;">
 
 							<th width="10%"><input type="checkbox" id="select_all"
 								name="Select" class="text"> Select All</th>
 							<th width="5%" class="text">S.NO</th>
-							<th width="15%" class="text">Name</th>
-							<th width="15%" class="text">orderProduct</th>
-							<th width="15%" class="text">address</th>
-							<th width="20%" class="text">DATE</th>
+							<th width="15%" class="text">ItemName</th>
+							<th width="20%" class="text">Quality</th>
+							<th width="15%" class="text">Product</th>
+							<th width="15%" class="text">Date</th>
 							<th width="5%" class="text">Edit</th>
 						</tr>
 					</thead>
@@ -192,15 +190,14 @@
 								name="ids" value="<%=dto.getId()%>"
 								></td>
 							<td class="text"><%=index++%></td>
-							<td class="text"><%=dto.getName()%></td>
-						
-							<td class="text"><%=dto.getOrderProduct()%></td>
-							<td class="text"><%=dto.getAddress()%></td>
-						
+							<td class="text"><%=dto.getAmount()%></td>
 							
-							<%-- <td class="text"><%=rbean.getName()%></td> --%>
-							<td class="text"><%=DataUtility.getDateString(dto.getDob())%></td>
-							<td class="text"><a href="OrderCtl?id=<%=dto.getId()%>">Edit</a></td>
+							<td class="text"><%=dto.getQuantity()%></td>
+							<td class="text"><%=dto.getProduct()%></td>
+							<td class="text"><%=DataUtility.getDateString(dto.getDate())%></td>
+							
+							<td class="text"><a href="OrderCtl?id=<%=dto.getId()%>"
+							>Edit</a></td>
 						</tr>
 					</tbody>
 					<%
@@ -236,7 +233,7 @@
 				if (list.size() == 0) {
 			%>
 			<center>
-				<h1 style="font-size: 40px; color: #162390;">Order List</h1>
+				<h1 style="font-size: 40px; color: #162390;">Product List</h1>
 			</center>
 			</br>
 			<div class="row">
@@ -292,8 +289,7 @@
 
 	</div>
 
+
 </body>
-
 <%@include file="FooterView.jsp"%>
-
 </html>

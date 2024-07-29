@@ -10,11 +10,6 @@ import in.co.rays.project_3.model.CollegeModelHibImp;
 import in.co.rays.project_3.model.CollegeModelInt;
 import in.co.rays.project_3.model.CollegeModelJDBCImpl;
 
-/**
- * 
- * @author Ankit Rajput
- *
- */
 public class CollegeModelTest {
 public static CollegeModelInt model=new CollegeModelHibImp();
 //public static CollegeModelInt model=new CollegeModelJDBCImpl();

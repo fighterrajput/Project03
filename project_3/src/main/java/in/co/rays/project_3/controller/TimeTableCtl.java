@@ -25,10 +25,11 @@ import in.co.rays.project_3.util.ServletUtility;
 /**
  * Timetable functionality controller. to perform add,delete and update
  * operation
+ * 
  * @author Ankit Rajput
  *
  */
-@WebServlet(urlPatterns={"/ctl/TimeTableCtl"})
+@WebServlet(urlPatterns={"/ctl/TimeTableCtl"})	
 public class TimeTableCtl extends BaseCtl{
 	private static Logger log = Logger.getLogger(TimeTableCtl.class);
 

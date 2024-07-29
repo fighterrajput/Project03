@@ -9,43 +9,48 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
+
 import in.co.rays.project_3.dto.EmployeeDTO;
 import in.co.rays.project_3.exception.ApplicationException;
 import in.co.rays.project_3.exception.DuplicateRecordException;
 import in.co.rays.project_3.util.HibDataSource;
 
 public class EmployeeModelHibImp implements EmployeeModelInt{
+
+	@Override
 	public long add(EmployeeDTO dto) throws ApplicationException, DuplicateRecordException {
-
-
-		EmployeeDTO existDto = null;
 		
-		Session session = HibDataSource.getSession();
-		Transaction tx = null;
-		try {
+		 EmployeeDTO existDto = null;
+			
+			Session session = HibDataSource.getSession();
+			Transaction tx = null;
+			try {
 
-			tx = session.beginTransaction();
+				tx = session.beginTransaction();
 
-			session.save(dto);
+				session.save(dto);
 
-			dto.getId();
-			tx.commit();
-		} catch (HibernateException e) {
-			e.printStackTrace();
-			if (tx != null) {
-				tx.rollback();
+				dto.getId();
+				tx.commit();
+			} catch (HibernateException e) {
+				e.printStackTrace();
+				if (tx != null) {
+					tx.rollback();
 
+				}
+				throw new ApplicationException("Exception in Employee Add " + e.getMessage());
+			} finally {
+				session.close();
 			}
-			throw new ApplicationException("Exception in Employee Add " + e.getMessage());
-		} finally {
-			session.close();
-		}
-		return dto.getId();
 
+
+		return dto.getId();
 	}
 
-	
+	@Override
 	public void delete(EmployeeDTO dto) throws ApplicationException {
+
+		
 		Session session = null;
 		Transaction tx = null;
 		try {
@@ -61,13 +66,23 @@ public class EmployeeModelHibImp implements EmployeeModelInt{
 		} finally {
 			session.close();
 		}
+
 	}
 
-
+	@Override
 	public void update(EmployeeDTO dto) throws ApplicationException, DuplicateRecordException {
+		
+		
 		Session session = null;
 		
-		Transaction tx = null;
+		/*
+		 * Transaction tx = null; EmployeeDTO exesistDto = findByLogin(dto.getLogin());
+		 * 
+		 * if (exesistDto != null && exesistDto.getId() != dto.getId()) { throw new
+		 * DuplicateRecordException("Login id already exist"); }
+		 * 
+		 */		  Transaction tx = null;
+		 
 
 		try {
 			session = HibDataSource.getSession();
@@ -82,11 +97,13 @@ public class EmployeeModelHibImp implements EmployeeModelInt{
 		} finally {
 			session.close();
 		}
+
 	}
 
-	
-
+	@Override
 	public EmployeeDTO findByPK(long pk) throws ApplicationException {
+		
+		
 		Session session = null;
 		EmployeeDTO dto = null;
 		try {
@@ -94,7 +111,7 @@ public class EmployeeModelHibImp implements EmployeeModelInt{
 			dto = (EmployeeDTO) session.get(EmployeeDTO.class, pk);
 
 		} catch (HibernateException e) {
-			throw new ApplicationException("Exception : Exception in getting Employee by pk");
+			throw new ApplicationException("Exception : Exception in getting Bank by pk");
 		} finally {
 			session.close();
 		}
@@ -102,9 +119,11 @@ public class EmployeeModelHibImp implements EmployeeModelInt{
 		return dto;
 	}
 
-	
-
+	@Override
 	public EmployeeDTO findByLogin(String login) throws ApplicationException {
+		
+		
+		
 		Session session = null;
 		EmployeeDTO dto = null;
 		try {
@@ -126,15 +145,9 @@ public class EmployeeModelHibImp implements EmployeeModelInt{
 		return dto;
 	}
 
-	
-	public List list() throws ApplicationException {
-		return list(0, 0);
-	}
-
-	
-
+	@Override
 	public List list(int pageNo, int pageSize) throws ApplicationException {
-		// TODO Auto-generated method stub
+		
 		Session session = null;
 		List list = null;
 		try {
@@ -149,7 +162,7 @@ public class EmployeeModelHibImp implements EmployeeModelInt{
 			list = criteria.list();
 
 		} catch (HibernateException e) {
-			throw new ApplicationException("Exception : Exception in  Employees list");
+			throw new ApplicationException("Exception : Exception in  Banks list");
 		} finally {
 			session.close();
 		}
@@ -157,16 +170,13 @@ public class EmployeeModelHibImp implements EmployeeModelInt{
 		return list;
 	}
 
-	
-	public List search(EmployeeDTO dto) throws ApplicationException {
-		// TODO Auto-generated method stub
-		return search(dto, 0, 0);
-	}
-
-	
+	/*
+	 * @Override public List list(int pageNo, int pageSize) throws
+	 * ApplicationException { // TODO Auto-generated method stub return null; }
+	 */
+	@Override
 	public List search(EmployeeDTO dto, int pageNo, int pageSize) throws ApplicationException {
-		// TODO Auto-generated method stub
-
+		
 		Session session = null;
 		ArrayList<EmployeeDTO> list = null;
 		try {
@@ -183,51 +193,49 @@ public class EmployeeModelHibImp implements EmployeeModelInt{
 				  if (dto.getSalary() != null && dto.getSalary().length() > 0) {
 				  criteria.add(Restrictions.like("salary", dto.getSalary() + "%"));
 				  }
-
-				  if (dto.getStatus() != null && dto.getStatus().length() > 0) {
-				  criteria.add(Restrictions.like("status", dto.getStatus() + "%"));
-				  }
-				  
-				
-				
-				  if (dto.getAccountNumber() != null && dto.getAccountNumber().length() > 0) {
-				  criteria.add(Restrictions.eq("accountNumber", dto.getAccountNumber())); }
-				 
-				
-				if (dto.getDob() != null && dto.getDob().getTime() > 0) {
-					criteria.add(Restrictions.eq("dob", dto.getDob()));
+					if (dto.getAccountNumber() != null && dto.getAccountNumber().length() > 0) {
+						criteria.add(Restrictions.eq("accountNumber", dto.getAccountNumber()));
+					}
+					if (dto.getStatus() != null && dto.getStatus().length() > 0) {
+						criteria.add(Restrictions.eq("status", dto.getStatus()));
+					}
+					if (dto.getDob() != null && dto.getDob().getTime() > 0) {
+						criteria.add(Restrictions.eq("dob", dto.getDob()));
+					}
+			}
+					
+					if (pageSize > 0) {
+						pageNo = (pageNo - 1) * pageSize;
+						criteria.setFirstResult(pageNo);
+						criteria.setMaxResults(pageSize);
+					}
+					list = (ArrayList<EmployeeDTO>) criteria.list();
+				} catch (HibernateException e) {
+					throw new ApplicationException("Exception in Employee search");
+				} finally {
+					session.close();
 				}
-				
-				
-			}
-			
-			
-			if (pageSize > 0) {
-				pageNo = (pageNo - 1) * pageSize;
-				criteria.setFirstResult(pageNo);
-				criteria.setMaxResults(pageSize);
-			}
-			list = (ArrayList<EmployeeDTO>) criteria.list();
-		} catch (HibernateException e) {
-			throw new ApplicationException("Exception in Employee search");
-		} finally {
-			session.close();
-		}
 
+		
 		return list;
 	}
 
-	
+	@Override
+	public List search(EmployeeDTO dto) throws ApplicationException {
+		// TODO Auto-generated method stub
+		return search(dto,0,0);
+	}
 
+	@Override
 	public List getRoles(EmployeeDTO dto) throws ApplicationException {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-
-
-	
-	
-
-	
+	@Override
+	public List list() throws ApplicationException {
+		// TODO Auto-generated method stub
+		return list(0,0);
+	}
 
 }

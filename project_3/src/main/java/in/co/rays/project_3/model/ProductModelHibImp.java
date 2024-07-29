@@ -15,40 +15,42 @@ import in.co.rays.project_3.exception.ApplicationException;
 import in.co.rays.project_3.exception.DuplicateRecordException;
 import in.co.rays.project_3.util.HibDataSource;
 
-public class ProductModelHibImp implements ProductModelInt {
+public class ProductModelHibImp implements ProductModelInt{
 
 	@Override
 	public long add(ProductDTO dto) throws ApplicationException, DuplicateRecordException {
 		
+		 ProductDTO existDto = null;
+			
+			Session session = HibDataSource.getSession();
+			Transaction tx = null;
+			try {
 
-		ProductDTO existDto = null;
-		
-		Session session = HibDataSource.getSession();
-		Transaction tx = null;
-		try {
+				tx = session.beginTransaction();
 
-			tx = session.beginTransaction();
+				session.save(dto);
 
-			session.save(dto);
+				dto.getId();
+				tx.commit();
+			} catch (HibernateException e) {
+				e.printStackTrace();
+				if (tx != null) {
+					tx.rollback();
 
-			dto.getId();
-			tx.commit();
-		} catch (HibernateException e) {
-			e.printStackTrace();
-			if (tx != null) {
-				tx.rollback();
-
+				}
+				throw new ApplicationException("Exception in Order Add " + e.getMessage());
+			} finally {
+				session.close();
 			}
-			throw new ApplicationException("Exception in Product Add " + e.getMessage());
-		} finally {
-			session.close();
-		}
-		return dto.getId();
 
+		
+		return dto.getId();
 	}
 
 	@Override
 	public void delete(ProductDTO dto) throws ApplicationException {
+		
+		
 		Session session = null;
 		Transaction tx = null;
 		try {
@@ -60,23 +62,18 @@ public class ProductModelHibImp implements ProductModelInt {
 			if (tx != null) {
 				tx.rollback();
 			}
-			throw new ApplicationException("Exception in Product Delete" + e.getMessage());
+			throw new ApplicationException("Exception in Order Delete" + e.getMessage());
 		} finally {
 			session.close();
 		}
+
 	}
-		
-	
 
 	@Override
 	public void update(ProductDTO dto) throws ApplicationException, DuplicateRecordException {
+
 		Session session = null;
-		/*
-		 * Transaction tx = null; ProductDTO exesistDto = findByLogin(dto.getLogin());
-		 * 
-		 * if (exesistDto != null && exesistDto.getId() != dto.getId()) { throw new
-		 * DuplicateRecordException("Login id already exist"); }
-		 */
+		
 		Transaction tx = null;
 
 		try {
@@ -88,15 +85,15 @@ public class ProductModelHibImp implements ProductModelInt {
 			if (tx != null) {
 				tx.rollback();
 			}
-			throw new ApplicationException("Exception in Product update" + e.getMessage());
+			throw new ApplicationException("Exception in Order update" + e.getMessage());
 		} finally {
 			session.close();
 		}
-		
 	}
 
 	@Override
 	public ProductDTO findByPK(long pk) throws ApplicationException {
+		
 		Session session = null;
 		ProductDTO dto = null;
 		try {
@@ -109,12 +106,14 @@ public class ProductModelHibImp implements ProductModelInt {
 			session.close();
 		}
 
-		return dto;
 
+		return dto;
 	}
 
 	@Override
 	public ProductDTO findByLogin(String login) throws ApplicationException {
+		
+		
 		Session session = null;
 		ProductDTO dto = null;
 		try {
@@ -127,7 +126,7 @@ public class ProductModelHibImp implements ProductModelInt {
 			}
 		} catch (HibernateException e) {
 			e.printStackTrace();
-			throw new ApplicationException("Exception in getting Product by Login " + e.getMessage());
+			throw new ApplicationException("Exception in getting Order by Login " + e.getMessage());
 
 		} finally {
 			session.close();
@@ -135,14 +134,17 @@ public class ProductModelHibImp implements ProductModelInt {
 
 		return dto;
 	}
+
 	@Override
 	public List list() throws ApplicationException {
-		return list(0, 0);
-
+		// TODO Auto-generated method stub
+		return list(0,0);
 	}
 
 	@Override
 	public List list(int pageNo, int pageSize) throws ApplicationException {
+		
+
 		Session session = null;
 		List list = null;
 		try {
@@ -157,7 +159,7 @@ public class ProductModelHibImp implements ProductModelInt {
 			list = criteria.list();
 
 		} catch (HibernateException e) {
-			throw new ApplicationException("Exception : Exception in  Products list");
+			throw new ApplicationException("Exception : Exception in  Order list");
 		} finally {
 			session.close();
 		}
@@ -165,10 +167,9 @@ public class ProductModelHibImp implements ProductModelInt {
 		return list;
 	}
 
-	
-	
 	@Override
 	public List search(ProductDTO dto, int pageNo, int pageSize) throws ApplicationException {
+		
 		Session session = null;
 		ArrayList<ProductDTO> list = null;
 		try {
@@ -182,29 +183,18 @@ public class ProductModelHibImp implements ProductModelInt {
 					criteria.add(Restrictions.like("name", dto.getName() + "%"));
 				}
 				
-				  if (dto.getPrice() != null && dto.getPrice().length() > 0) {
-				  criteria.add(Restrictions.eq("price", dto.getPrice() ));
-				  }
-				/*
-				 * if (dto.getLogin() != null && dto.getLogin().length() > 0) {
-				 * criteria.add(Restrictions.like("login", dto.getLogin() + "%")); }
-				 */
-				if (dto.getType() != null && dto.getType().length() > 0) {
-					criteria.add(Restrictions.eq("type", dto.getType()));
+				  if (dto.getQuality() != null && dto.getQuality().length() > 0) {
+					  criteria.add(Restrictions.like("quality", dto.getQuality() + "%"));
+					}
+				  
+				  if (dto.getStatus() != null && dto.getStatus().length() > 0) {
+					  criteria.add(Restrictions.like("status", dto.getStatus() + "%"));
+					  }
+
+			   if (dto.getPurchesDate() != null && dto.getPurchesDate().getDate() > 0) {
+					criteria.add(Restrictions.eq("purchesDate", dto.getPurchesDate()));
 				}
-				/*
-				 * if (dto.getGender() != null && dto.getGender().length() > 0) {
-				 * criteria.add(Restrictions.like("gender", dto.getGender() + "%")); }
-				 */
-				if (dto.getExpireDate() != null && dto.getExpireDate().getTime() > 0) {
-					criteria.add(Restrictions.eq("expireDate", dto.getExpireDate()));
-				}
-				/*
-				 * if (dto.getLastLogin() != null && dto.getLastLogin().getTime() > 0) {
-				 * criteria.add(Restrictions.eq("lastLogin", dto.getLastLogin())); } if
-				 * (dto.getRoleId() > 0) { criteria.add(Restrictions.eq("roleId",
-				 * dto.getRoleId())); }
-				 */
+				
 				
 			}
 			
@@ -217,19 +207,20 @@ public class ProductModelHibImp implements ProductModelInt {
 			}
 			list = (ArrayList<ProductDTO>) criteria.list();
 		} catch (HibernateException e) {
-			throw new ApplicationException("Exception in Product search");
+			throw new ApplicationException("Exception in Order search");
 		} finally {
 			session.close();
 		}
 
+
+		
 		return list;
 	}
-	
 
 	@Override
 	public List search(ProductDTO dto) throws ApplicationException {
-		return search(dto, 0, 0);
-		
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -237,5 +228,8 @@ public class ProductModelHibImp implements ProductModelInt {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
+
 
 }

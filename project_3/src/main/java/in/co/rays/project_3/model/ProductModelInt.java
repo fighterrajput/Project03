@@ -6,7 +6,7 @@ import in.co.rays.project_3.dto.ProductDTO;
 import in.co.rays.project_3.exception.ApplicationException;
 import in.co.rays.project_3.exception.DuplicateRecordException;
 
-public  interface ProductModelInt {
+public interface ProductModelInt {
 	
 	public long add(ProductDTO dto)throws ApplicationException,DuplicateRecordException;
 	public void delete(ProductDTO dto)throws ApplicationException;
@@ -18,6 +18,6 @@ public  interface ProductModelInt {
 	public List search(ProductDTO dto,int pageNo,int pageSize)throws ApplicationException;
 	public List search(ProductDTO dto)throws ApplicationException;
 	public List getRoles(ProductDTO dto)throws ApplicationException;
-
+	
 
 }

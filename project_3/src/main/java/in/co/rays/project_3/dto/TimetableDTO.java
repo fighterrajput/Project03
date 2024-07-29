@@ -4,12 +4,12 @@ import java.util.Date;
 
 /**
  * TimeTable JavaBean encapsulates TimeTable attributes
- * 
  * @author Ankit Rajput
  *
  */
 
-public class TimetableDTO extends BaseDTO {	
+public class TimetableDTO extends BaseDTO
+{	
 	
 	/**
 	 * 
@@ -79,6 +79,7 @@ public class TimetableDTO extends BaseDTO {
 		this.examTime = examTime;
 	}
 
+	
 
 	public String getKey() {
 		// TODO Auto-generated method stub

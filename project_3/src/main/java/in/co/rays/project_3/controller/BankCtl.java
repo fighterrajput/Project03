@@ -8,29 +8,29 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-
-import in.co.rays.project_3.dto.BaseDTO;
 import in.co.rays.project_3.dto.BankDTO;
+import in.co.rays.project_3.dto.BaseDTO;
 import in.co.rays.project_3.exception.ApplicationException;
 import in.co.rays.project_3.exception.DuplicateRecordException;
+import in.co.rays.project_3.model.BankModelInt;
 import in.co.rays.project_3.model.ModelFactory;
 import in.co.rays.project_3.model.RoleModelInt;
-import in.co.rays.project_3.model.AddressModelInt;
-import in.co.rays.project_3.model.BankModelInt;
 import in.co.rays.project_3.util.DataUtility;
 import in.co.rays.project_3.util.DataValidator;
 import in.co.rays.project_3.util.PropertyReader;
 import in.co.rays.project_3.util.ServletUtility;
 
+
 @WebServlet(name = "BankCtl", urlPatterns = { "/ctl/BankCtl" })
 public class BankCtl extends BaseCtl {
+	
+	
 
 	protected void preload(HttpServletRequest request) {
-		AddressModelInt model = ModelFactory.getInstance().getAddressModel();
+		RoleModelInt model = ModelFactory.getInstance().getRoleModel();
 		try {
 			List list = model.list();
-			request.setAttribute("mt", list);
+			request.setAttribute("roleList", list);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -62,78 +62,21 @@ public class BankCtl extends BaseCtl {
 
 		}
 		if (!OP_UPDATE.equalsIgnoreCase(request.getParameter("operation"))) {
-			/*
-			 * if (DataValidator.isNull(request.getParameter("password"))) {
-			 * request.setAttribute("password", PropertyReader.getValue("error.require",
-			 * "Password")); System.out.println(pass); pass = false; }
-			 */
-			/*
-			 * else if (!DataValidator.isPassword(request.getParameter("password"))) {
-			 * request.setAttribute("password",
-			 * PropertyReader.getValue("Enter the valid Password"));
-			 * System.out.println(pass); pass = false; }
-			 * 
-			 * if (DataValidator.isNull(request.getParameter("confirmPassword"))) {
-			 * request.setAttribute("confirmPassword",
-			 * PropertyReader.getValue("error.require", "Confirm Password"));
-			 * System.out.println(pass); pass = false; } else if
-			 * (!DataValidator.isPassword(request.getParameter("confirmPassword"))){
-			 * request.setAttribute("confirmPassword",PropertyReader.
-			 * getValue("Enter the valid confirmPassword")); pass = false; }
-			 * 
-			 * 
-			 * else if (!request.getParameter("password").equals(request.getParameter(
-			 * "confirmPassword"))) { request.setAttribute("confirmPassword",
-			 * "Confirm Password should  be matched."); pass = false; } }if
-			 * (DataValidator.isNull(request.getParameter("role"))) {
-			 * request.setAttribute("role", PropertyReader.getValue("error.require",
-			 * "role")); pass = false; } if
-			 * (DataValidator.isNull(request.getParameter("gender"))) {
-			 * request.setAttribute("gender", PropertyReader.getValue("error.require",
-			 * "gender")); pass = false; } 
-			 *
-			 */
-		
+			
 			if(DataValidator.isNull(request.getParameter("accountNumber"))) {
 			  request.setAttribute("accountNumber", PropertyReader.getValue("error.require", "accountNumber"));
 			  pass = false;
 		}
-			
-			  else if (!DataValidator.isAccountNo(request.getParameter("accountNumber"))) {
-			  request.setAttribute("accountNumber", "Must contain digit Only And Length 6 to 12 ");
-			  pass = false;
-			 
-		}
-
-		/*
-		 * if (DataValidator.isNull(request.getParameter("emailId"))) {
-		 * request.setAttribute("emailId", PropertyReader.getValue("error.require",
-		 * "email Id")); pass = false; } else if
-		 * (!DataValidator.isEmail(request.getParameter("emailId"))) {
-		 * request.setAttribute("emailId", PropertyReader.getValue("error.email",
-		 * "Email Id ")); pass = false; }
-		 */
-		
+				
 		if (DataValidator.isNull(request.getParameter("dob"))) {
 			request.setAttribute("dob", PropertyReader.getValue("error.require", "dob"));
 			pass = false;
 		
 		}
-		/*
-		 * else if (!DataValidator.isDate(request.getParameter("dob"))) {
-		 * request.setAttribute("dob", PropertyReader.getValue("error.date",
-		 * "Date Of Birth")); pass = false; }else if
-		 * (!DataValidator.isValidAge(request.getParameter("dob"))) {
-		 * 
-		 * request.setAttribute("dob", "Age Must be greater then 18 year"); pass =
-		 * false;
-		 */
-		
+				
 		}
-		
 		return pass;
-
-	}
+		}
 
 	protected BaseDTO populateDTO(HttpServletRequest request) {
 		BankDTO dto = new BankDTO();
@@ -142,23 +85,13 @@ public class BankCtl extends BaseCtl {
          System.out.println(request.getParameter("dob"));      
    
 		dto.setId(DataUtility.getLong(request.getParameter("id")));
-
-	//	dto.setRoleId(DataUtility.getLong(request.getParameter("role")));
-		dto.setDob(DataUtility.getDate(request.getParameter("dob")));
+        dto.setDob(DataUtility.getDate(request.getParameter("dob")));
 		dto.setName(DataUtility.getString(request.getParameter("name")));
+        dto.setAccountNumber(DataUtility.getString(request.getParameter("accountNumber")));
+        dto.setAddress(DataUtility.getString(request.getParameter("address")));
 
-		dto.setAccountNumber(DataUtility.getString(request.getParameter("accountNumber")));
 
-		dto.setAddress(DataUtility.getString(request.getParameter("address")));
-
-		//dto.setPassword(DataUtility.getString(request.getParameter("password")));
-
-		//dto.setConfirmPassword(DataUtility.getString(request.getParameter("confirmPassword")));
-
-		//dto.setGender(DataUtility.getString(request.getParameter("gender")));
-		//dto.setMobileNo(DataUtility.getString(request.getParameter("mobileNo")));
-        
-		populateBean(dto,request);
+        populateBean(dto,request);
 		
 
 		return dto;
@@ -252,5 +185,6 @@ public class BankCtl extends BaseCtl {
 	}
 
 	
+
 
 }

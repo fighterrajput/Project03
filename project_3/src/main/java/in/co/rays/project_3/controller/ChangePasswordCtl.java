@@ -20,12 +20,10 @@ import in.co.rays.project_3.util.DataValidator;
 import in.co.rays.project_3.util.PropertyReader;
 import in.co.rays.project_3.util.ServletUtility;
 
-
 /**
  * @author Ankit Rajput
  *
  */
-
 @WebServlet(urlPatterns={"/ctl/ChangePasswordCtl"})
 public class ChangePasswordCtl extends BaseCtl{
 	private static Logger log = Logger.getLogger(ChangePasswordCtl.class);

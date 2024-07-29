@@ -2,49 +2,55 @@ package in.co.rays.project_3.dto;
 
 import java.util.Date;
 
-public class ProductDTO  extends BaseDTO{
+public class ProductDTO extends BaseDTO {
 
-	  
-	   private  String name ;
-	   private String price ;
-	   private String type;
-	   private Date expireDate ;
-	   
-	   
+	private String name;
+	private String status;
+	private String quality;
+	private Date purchesDate;
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getPrice() {
-		return price;
+
+	public String getStatus() {
+		return status;
 	}
-	public void setPrice(String price) {
-		this.price = price;
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
-	public String getType() {
-		return type;
+
+	public String getQuality() {
+		return quality;
 	}
-	public void setType(String type) {
-		this.type = type;
+
+	public void setQuality(String quality) {
+		this.quality = quality;
 	}
-	public Date getExpireDate() {
-		return expireDate;
+
+	public Date getPurchesDate() {
+		return purchesDate;
 	}
-	public void setExpireDate(Date expireDate) {
-		this.expireDate = expireDate;
+
+	public void setPurchesDate(Date purchesDate) {
+		this.purchesDate = purchesDate;
 	}
+
 	@Override
 	public String getKey() {
 		// TODO Auto-generated method stub
-		return type;
+		return name;
 	}
+
 	@Override
 	public String getValue() {
 		// TODO Auto-generated method stub
-		return type;
+		return name ;
 	}
-	   
-	   
+
 }

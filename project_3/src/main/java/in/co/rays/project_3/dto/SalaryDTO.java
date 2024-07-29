@@ -1,35 +1,33 @@
 package in.co.rays.project_3.dto;
 
+import java.util.Date;
+
 public class SalaryDTO  extends BaseDTO{
-
-	private String employe;
-	private String amount;
-	private String appledDate;
-
+	
+	private int amount;
+	private Date appliedDate;
 	private String status;
+	private String mobileNumber;
+	private String description;
+	
+	
+	
+	
 
-	public String getEmploye() {
-		return employe;
-	}
-
-	public void setEmploye(String employe) {
-		this.employe = employe;
-	}
-
-	public String getAmount() {
+		public int getAmount() {
 		return amount;
 	}
 
-	public void setAmount(String amount) {
+	public void setAmount(int amount) {
 		this.amount = amount;
 	}
 
-	public String getAppledDate() {
-		return appledDate;
+		public Date getAppliedDate() {
+		return appliedDate;
 	}
 
-	public void setAppledDate(String appledDate) {
-		this.appledDate = appledDate;
+	public void setAppliedDate(Date appliedDate) {
+		this.appliedDate = appliedDate;
 	}
 
 	public String getStatus() {
@@ -39,6 +37,27 @@ public class SalaryDTO  extends BaseDTO{
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
+	
+
+	public String getMobileNumber() {
+		return mobileNumber;
+	}
+
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	
+	
 
 	@Override
 	public String getKey() {
@@ -51,4 +70,5 @@ public class SalaryDTO  extends BaseDTO{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 }

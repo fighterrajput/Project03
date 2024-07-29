@@ -1,4 +1,3 @@
-
 package in.co.rays.project_3.test;
 
 import java.sql.Timestamp;
@@ -16,16 +15,16 @@ import in.co.rays.project_3.model.UserModelJDBCImpl;
 
 public class UserModelTest {
 	public static UserModelInt model = new UserModelHibImp();
-	//public static UserModelInt model = new UserModelJDBCImpl();
+	// public static UserModelInt model = new UserModelJDBCImpl();
 
 	public static void main(String[] args) throws Exception {
 		addTest();
-		//updateTest();
-		//deleteTest();
-		// findByPKTest(); 
-		 //findByLoginTest();
-		 //listTest();
-		// searchTest(); 
+		// updateTest();
+		// deleteTest();
+		// findByPKTest();
+		// findByLoginTest();
+		// listTest();
+		// searchTest();
 	}
 
 	private static void findByLoginTest() throws ApplicationException {
@@ -33,31 +32,31 @@ public class UserModelTest {
 		UserDTO dto = model.findByLogin("Mayankshi@gmail.com");
 		System.out.println(dto.getId() + "\t" + dto.getFirstName() + "\t" + dto.getLastName() + "\t" + dto.getLogin()
 				+ "\t" + dto.getPassword() + "\t" + dto.getDob() + "\t" + dto.getMobileNo() + "\t" + dto.getRoleId()
-				+ "\t" + dto.getUnSuccessfullLogin() + "\t" + dto.getGender() + "\t" 
-				 );
+				+ "\t" + dto.getUnSuccessfullLogin() + "\t" + dto.getGender() + "\t");
 
 	}
 
 	public static void searchTest() throws ApplicationException {
 		// TODO Auto-generated method stub
 		UserDTO dto = new UserDTO();
-       dto.setId(2L);
-		//dto.setFirstName("Mayankshi");
+		dto.setId(2L);
+		// dto.setFirstName("Mayankshi");
 		// dto.setLastName("agrawal");
 		// dto.setLogin("login");
 		// dto.setPassword("123");
 		// dto.setMobileNO("989");
-	//	dto.setRoleId(1);
+		// dto.setRoleId(1);
 		// dto.setUnSuccessfullLogin(1);
 
-		//dto.setGender("male");
-        
-		ArrayList<UserDTO> a = (ArrayList<UserDTO>) model.search(dto,0,0);
-		
+		// dto.setGender("male");
+
+		ArrayList<UserDTO> a = (ArrayList<UserDTO>) model.search(dto, 0, 0);
+
 		for (UserDTO udto1 : a) {
 			System.out.println(udto1.getId() + "\t" + udto1.getFirstName() + "\t" + udto1.getLastName() + "\t"
-					+ udto1.getLogin() + "\t" + udto1.getPassword() + "\t" + udto1.getDob() + "\t"
-					+ udto1.getMobileNo() + "\t" + udto1.getRoleId() );}
+					+ udto1.getLogin() + "\t" + udto1.getPassword() + "\t" + udto1.getDob() + "\t" + udto1.getMobileNo()
+					+ "\t" + udto1.getRoleId());
+		}
 	}
 
 	public static void listTest() throws ApplicationException {
@@ -81,7 +80,6 @@ public class UserModelTest {
 			System.out.println(dto.getUnSuccessfullLogin());
 			System.out.println(dto.getGender());
 			System.out.println(dto.getLastLogin());
-			
 			System.out.println(dto.getMobileNo());
 			System.out.println(dto.getCreatedBy());
 			System.out.println(dto.getModifiedBy());
@@ -95,8 +93,8 @@ public class UserModelTest {
 		UserDTO dto = model.findByPK(3L);
 		System.out.println(dto.getId() + "\t" + dto.getFirstName() + "\t" + dto.getLastName() + "\t" + dto.getLogin()
 				+ "\t" + dto.getPassword() + "\t" + dto.getDob() + "\t" + dto.getMobileNo() + "\t" + dto.getRoleId()
-				+ "\t" + dto.getUnSuccessfullLogin() + "\t" + dto.getGender() + "\t" + dto.getLastLogin() + "\t"
-				+ "\t" + dto.getLastLogin() + "\t" + dto.getRegisteredIP());
+				+ "\t" + dto.getUnSuccessfullLogin() + "\t" + dto.getGender() + "\t" + dto.getLastLogin() + "\t" + "\t"
+				+ dto.getLastLogin() + "\t" + dto.getRegisteredIP());
 	}
 
 	public static void addTest() throws Exception {
@@ -104,28 +102,28 @@ public class UserModelTest {
 		// System.out.println("heellloooooo");
 		UserDTO dto = new UserDTO();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-		
-		dto.setFirstName("Vipin");
-		dto.setLastName("Gupta");
-		dto.setDob(sdf.parse("13-06-1992"));
-		dto.setConfirmPassword("Vipin@12345");
-		dto.setPassword("Vipin@12345");
-		dto.setLogin("gupta.vipin02@gmail.com");
-		dto.setGender("male");
-		dto.setUnSuccessfullLogin(2);
 
-		dto.setCreatedBy("admin");
-		dto.setModifiedBy("admin");
+		dto.setFirstName("Sourabh");
+		dto.setLastName("Rajput");
+		dto.setDob(sdf.parse("20-04-1999"));
+		dto.setConfirmPassword("Sourabh@1234");
+		dto.setPassword("Sourabh@1234");
+		dto.setLogin("rajputsourabh737@gmail.com");
+		dto.setGender("male");
+		dto.setUnSuccessfullLogin(1);
+
+		dto.setCreatedBy("Admin");
+		dto.setModifiedBy("Admin");
 		dto.setRoleId(1);
-		dto.setMobileNo("9406653787");
-		dto.setRegisteredIP("gupta.vipin02@gmail.com");
-		dto.setLoginIP("gupta.vipin02@gmail.com");
+		dto.setMobileNo("9669635650");
+		dto.setRegisteredIP("rajputsourabh737@gmail.com");
+		dto.setLoginIP("rajputsourabh737@gmail.com");
 		dto.setLastLogin(new Timestamp(new Date().getTime()));
 		dto.setCreatedDatetime(new Timestamp(new Date().getTime()));
 		dto.setModifiedDatetime(new Timestamp(new Date().getTime()));
 		System.out.println("add");
-		 long pk = model.add(dto); 
-		System.out.println(pk + "data successfully insert"); 
+		long pk = model.add(dto);
+		System.out.println(pk + "data successfully insert");
 	}
 
 	public static void deleteTest() throws ApplicationException {
@@ -142,7 +140,7 @@ public class UserModelTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		dto.setId(1L);
 		dto.setFirstName("Mayank");
-		
+
 		dto.setLastName("agrawalll");
 		dto.setDob(sdf.parse("31-12-1995"));
 		dto.setConfirmPassword("1234");
@@ -150,7 +148,7 @@ public class UserModelTest {
 		dto.setLogin("Mayank@gmail.com");
 		dto.setGender("males");
 		dto.setUnSuccessfullLogin(2);
-		
+
 		dto.setCreatedBy("admins");
 		dto.setModifiedBy("admins");
 		dto.setRoleId(1);

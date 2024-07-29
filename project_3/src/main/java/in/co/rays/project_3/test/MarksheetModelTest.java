@@ -19,12 +19,12 @@ public class MarksheetModelTest {
 
 	// public static MarksheetModelInt model=new MarksheetModelJDBCImpl();
 	public static void main(String[] args) throws Exception {
-		//addTest();
+		addTest();
 		// deleteTest();
 		//updateTest();
 		//findByPkTest();
 		//findByEmailIdTest();
-	 listTest();
+	 //listTest();
 	//	searchTest();
 	}
 
@@ -104,7 +104,7 @@ public class MarksheetModelTest {
 		dto.setRollNo("102");
 		dto.setStudentId(2);
 		dto.setPhysics(75);
-		dto.setName("Ankit Rajput");
+		dto.setName("Yash");
 		dto.setCreatedBy("Admin");
 		dto.setModifiedBy("Admin");
 		dto.setCreatedDatetime(new Timestamp(new Date().getTime()));

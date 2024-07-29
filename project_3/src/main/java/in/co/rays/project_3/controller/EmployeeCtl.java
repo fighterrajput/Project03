@@ -8,30 +8,28 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
 
 import in.co.rays.project_3.dto.BaseDTO;
 import in.co.rays.project_3.dto.EmployeeDTO;
 import in.co.rays.project_3.exception.ApplicationException;
 import in.co.rays.project_3.exception.DuplicateRecordException;
+
+import in.co.rays.project_3.model.EmployeeModelInt;
 import in.co.rays.project_3.model.ModelFactory;
 import in.co.rays.project_3.model.RoleModelInt;
-import in.co.rays.project_3.model.StatusModelInt;
-import in.co.rays.project_3.model.EmployeeModelInt;
 import in.co.rays.project_3.util.DataUtility;
 import in.co.rays.project_3.util.DataValidator;
 import in.co.rays.project_3.util.PropertyReader;
 import in.co.rays.project_3.util.ServletUtility;
 
 @WebServlet(name = "EmployeeCtl", urlPatterns = { "/ctl/EmployeeCtl" })
-public class EmployeeCtl extends BaseCtl {
+public class EmployeeCtl extends BaseCtl{
 
 	protected void preload(HttpServletRequest request) {
 		RoleModelInt model = ModelFactory.getInstance().getRoleModel();
-		StatusModelInt model1 = ModelFactory.getInstance().getStatusModel();
 		try {
-			List list = model1.list();
-			request.setAttribute("mt", list);
+			List list = model.list();
+			request.setAttribute("roleList", list);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -52,78 +50,63 @@ public class EmployeeCtl extends BaseCtl {
 			pass = false;
 
 		}
-		
-		  if (DataValidator.isNull(request.getParameter("status"))) {
-		  request.setAttribute("status", PropertyReader.getValue("error.require", "EmployeeType"));
-		  pass = false; 
-		  } 
-		  else if(!DataValidator.isName(request.getParameter("status"))) {
-		  request.setAttribute("status", "EmployeeStatus must contains alphabets only");
-		  System.out.println(pass); pass = false;
-		  
-		  }
-		  if (DataValidator.isNull(request.getParameter("salary"))) {
-			  request.setAttribute("salary", PropertyReader.getValue("error.require", "EmployeeSalary"));
-			  pass = false; 
-			  } 
-		/*
-		 * else if(!DataValidator.isName(request.getParameter("salary"))) {
-		 * request.setAttribute("salary",
-		 * "EmployeeSalary must contains alphabets only"); System.out.println(pass);
-		 * pass = false;
-		 * 
-		 * }
-		 */
-		 		
+		if (DataValidator.isNull(request.getParameter("salary"))) {
+			request.setAttribute("salary", PropertyReader.getValue("error.require", "salary"));
+			System.out.println(pass);
+			pass = false;
+		} else if (!DataValidator.isInteger(request.getParameter("salary"))) {
+			request.setAttribute("salary", "salary must contains number only");
+			System.out.println(pass);
+			pass = false;
+
+		}
 		if (!OP_UPDATE.equalsIgnoreCase(request.getParameter("operation"))) {
 			
-		
 			if(DataValidator.isNull(request.getParameter("accountNumber"))) {
 			  request.setAttribute("accountNumber", PropertyReader.getValue("error.require", "accountNumber"));
 			  pass = false;
 		}
 			
-			 else if (!DataValidator.isAccountNo(request.getParameter("accountNumber"))) {
-			  request.setAttribute("accountNumber", "Must contain digit Only And Length 6 to 12 "); 
-			  pass = false;
-			 
-			 
-		}
+			
+			
+			if (DataValidator.isNull(request.getParameter("status"))) {
+				request.setAttribute("status", PropertyReader.getValue("error.require", "status"));
+				pass = false;
+			
+			}
+			else if (!DataValidator.isName(request.getParameter("status"))) {
+				request.setAttribute("status", " status must contains alphabets only");
+				System.out.println(pass);
+				pass = false;
 
-		
-		
+			}
+
+				
 		if (DataValidator.isNull(request.getParameter("dob"))) {
 			request.setAttribute("dob", PropertyReader.getValue("error.require", "dob"));
 			pass = false;
 		
 		}
-		
+				
 		}
-		
 		return pass;
-
-	}
+		}
 
 	protected BaseDTO populateDTO(HttpServletRequest request) {
 		EmployeeDTO dto = new EmployeeDTO();
 		
          
+         System.out.println(request.getParameter("dob"));      
    
-		dto.setId(DataUtility.getLong(request.getParameter("id")));
+		 dto.setId(DataUtility.getLong(request.getParameter("id")));
+		 dto.setName(DataUtility.getString(request.getParameter("name")));
+		 dto.setSalary(DataUtility.getString(request.getParameter("salary")));
+         dto.setAccountNumber(DataUtility.getString(request.getParameter("accountNumber")));
+         dto.setStatus(DataUtility.getString(request.getParameter("status")));
 
-	//	dto.setRoleId(DataUtility.getLong(request.getParameter("role")));
-		dto.setDob(DataUtility.getDate(request.getParameter("dob")));
-		dto.setName(DataUtility.getString(request.getParameter("name")));
+         dto.setDob(DataUtility.getDate(request.getParameter("dob")));
 
-		dto.setAccountNumber(DataUtility.getString(request.getParameter("accountNumber")));
-
-		dto.setStatus(DataUtility.getString(request.getParameter("status")));
-		dto.setSalary(DataUtility.getString(request.getParameter("salary")));
-
-
-
-        
-		populateBean(dto,request);
+        populateBean(dto,request);
 		
 
 		return dto;
@@ -190,7 +173,7 @@ public class EmployeeCtl extends BaseCtl {
 			EmployeeDTO dto = (EmployeeDTO) populateDTO(request);
 			try {
 				model.delete(dto);
-				ServletUtility.redirect(ORSView.Employee_LIST_CTL, request, response);
+				ServletUtility.redirect(ORSView.EMPLOYEE_LIST_CTL, request, response);
 				return;
 			} catch (ApplicationException e) {
 				ServletUtility.handleException(e, request, response);
@@ -199,23 +182,26 @@ public class EmployeeCtl extends BaseCtl {
 
 		} else if (OP_CANCEL.equalsIgnoreCase(op)) {
 
-			ServletUtility.redirect(ORSView.Employee_LIST_CTL, request, response);
+			ServletUtility.redirect(ORSView.EMPLOYEE_LIST_CTL, request, response);
 			return;
 		} else if (OP_RESET.equalsIgnoreCase(op)) {
 
-			ServletUtility.redirect(ORSView.Employee_CTL, request, response);
+			ServletUtility.redirect(ORSView.EMPLOYEE_CTL, request, response);
 			return;
 		}
 		ServletUtility.forward(getView(), request, response);
 
 	}
-
+	
+	
+	
 	@Override
 	protected String getView() {
 		// TODO Auto-generated method stub
-		return ORSView.Employee_VIEW;
+		return ORSView.EMPLOYEE_VIEW;
 	}
 
 	
+
 
 }

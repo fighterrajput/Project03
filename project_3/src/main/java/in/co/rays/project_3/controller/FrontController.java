@@ -29,17 +29,21 @@ public class FrontController implements Filter {
 			throws IOException, ServletException {
 		
 		HttpServletRequest request = (HttpServletRequest) req;
+		
 		HttpServletResponse response = (HttpServletResponse) resp;
 		
 		HttpSession session = request.getSession();
 		
 		String uri=request.getRequestURI();
+		
 		request.setAttribute("uri", uri);
 		
 		if (session.getAttribute("user") == null) {
-		//	request.setAttribute("error", "Your session is expired. Please Re-Login");
-			ServletUtility.setErrorMessage("Your session is expired. Please Re-Login",request );
+				
+			request.setAttribute("error", "your session is expired please re-Login");
+			
 			ServletUtility.forward(ORSView.LOGIN_VIEW, request, response);
+		
 		} else {
 			chain.doFilter(req, resp);
 		}

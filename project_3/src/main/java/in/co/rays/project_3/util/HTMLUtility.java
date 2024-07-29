@@ -21,7 +21,7 @@ public class HTMLUtility {
 
 	/**
      * Create HTML SELECT list from MAP paramters values
-     *   
+     * v  
      * @param name
      * @param selectedVal
      * @param map
@@ -70,7 +70,7 @@ public class HTMLUtility {
         for (String key : keys) {
             val = map.get(key);
             if (key.trim().equals(selectedVal)) {
-                sb.append("<option selected value='" + key + "'>" + val
+                sb.append("<option selected value='" + val + "'>" + val
                         + "</option>");
             } else {
                 sb.append("<option value='" + key + "'>" + val + "</option>");
@@ -124,7 +124,8 @@ public class HTMLUtility {
 */
 	public static String getList(String name, String selectedVal, List list) {
 
-        Collections.sort(list);       
+        Collections.sort(list); 
+        
         StringBuffer sb = new StringBuffer("<select class='form-control' style='border: 2px solid #8080803b;' class='form-control' name='" + name + "'>");
 
         boolean select=true;
@@ -280,7 +281,8 @@ public class HTMLUtility {
         }
         return button;
     }
-
+    
+   
    
 
     }

@@ -11,28 +11,24 @@ import javax.servlet.http.HttpServletResponse;
 
 import in.co.rays.project_3.dto.BaseDTO;
 import in.co.rays.project_3.dto.ProductDTO;
-import in.co.rays.project_3.dto.ProductDTO;
 import in.co.rays.project_3.exception.ApplicationException;
-import in.co.rays.project_3.model.ProductModelInt;
 import in.co.rays.project_3.model.ModelFactory;
 import in.co.rays.project_3.model.ProductModelInt;
 import in.co.rays.project_3.model.RoleModelInt;
-import in.co.rays.project_3.model.TypeModelInt;
 import in.co.rays.project_3.util.DataUtility;
 import in.co.rays.project_3.util.PropertyReader;
 import in.co.rays.project_3.util.ServletUtility;
 
-@WebServlet(name = " ProductListCtl", urlPatterns = { "/ctl/ProductListCtl" })
-public class ProductListCtl extends BaseCtl {
+@WebServlet(name = "ProductListCtl", urlPatterns = { "/ctl/ProductListCtl" })
+public class ProductListCtl extends BaseCtl{
 
-	@Override
 	protected void preload(HttpServletRequest request) {
-		TypeModelInt model = ModelFactory.getInstance().getTypeModel();
+		
 		ProductModelInt bmodel = ModelFactory.getInstance().getProductModel();
 
 		try {
-			List list = model.list(0, 0);
-			request.setAttribute("mt", list);
+			List list = bmodel.list(0, 0);
+			request.setAttribute("name", list);
 		} catch (Exception e) {
 
 		}
@@ -40,27 +36,21 @@ public class ProductListCtl extends BaseCtl {
 
 	@Override
 	protected BaseDTO populateDTO(HttpServletRequest request) {
-
 		ProductDTO dto = new ProductDTO();
 
 		dto.setName(DataUtility.getString(request.getParameter("name")));
-		// dto.setName(DataUtility.getString(request.getParameter("nname")));
-
-		// dto.setId(DataUtility.getLong(request.getParameter("ddob")));
-
-		dto.setPrice(DataUtility.getString(request.getParameter("price")));
-		dto.setType(DataUtility.getString(request.getParameter("type")));
-		dto.setExpireDate(DataUtility.getDate(request.getParameter("expireDate")));
+        
+        dto.setStatus(DataUtility.getString(request.getParameter("status")));
+		dto.setQuality(DataUtility.getString(request.getParameter("quality")));
+		dto.setPurchesDate(DataUtility.getDate(request.getParameter("purchesDate")));
 
 		populateBean(dto, request);
 		return dto;
-
 	}
 
-	@Override
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		List list;
 		List next;
 		int pageNo = 1;
@@ -71,7 +61,7 @@ public class ProductListCtl extends BaseCtl {
 		try {
 			list = model.search(dto, pageNo, pageSize);
 
-			ArrayList<ProductDTO> a = (ArrayList<ProductDTO>) list;
+			ArrayList a = (ArrayList<ProductDTO>) list;
 
 			next = model.search(dto, pageNo + 1, pageSize);
 			ServletUtility.setList(list, request);
@@ -92,7 +82,7 @@ public class ProductListCtl extends BaseCtl {
 			ServletUtility.handleException(e, request, response);
 			return;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -100,7 +90,6 @@ public class ProductListCtl extends BaseCtl {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		List list = null;
 		List next = null;
 		int pageNo = DataUtility.getInt(request.getParameter("pageNo"));
@@ -118,7 +107,7 @@ public class ProductListCtl extends BaseCtl {
 			if (OP_SEARCH.equalsIgnoreCase(op) || "Next".equalsIgnoreCase(op) || "Previous".equalsIgnoreCase(op)) {
 
 				if (OP_SEARCH.equalsIgnoreCase(op)) {
-
+					
 					pageNo = 1;
 				} else if (OP_NEXT.equalsIgnoreCase(op)) {
 					pageNo++;
@@ -178,12 +167,13 @@ public class ProductListCtl extends BaseCtl {
 			ServletUtility.handleException(e, request, response);
 			return;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
+	
+	
 	@Override
 	protected String getView() {
 		// TODO Auto-generated method stub

@@ -3,30 +3,29 @@ package in.co.rays.project_3.test;
 import java.util.Date;
 
 import in.co.rays.project_3.dto.BankDTO;
-import in.co.rays.project_3.dto.EmployeeDTO;
 import in.co.rays.project_3.exception.ApplicationException;
 import in.co.rays.project_3.exception.DuplicateRecordException;
 import in.co.rays.project_3.model.BankModelInt;
 import in.co.rays.project_3.model.ModelFactory;
-import in.co.rays.project_3.model.EmployeeModelInt;
 
 public class BankModelTest {
-	public static void main(String[] args) throws Exception, Exception {
+	
+	public static void main(String[] args) throws Exception {
+		
 		testAdd();
 	}
 
-	private static void testAdd() throws ApplicationException, Exception {
-		//BankDTO dto=new BankDTO();
-		EmployeeDTO dto=new EmployeeDTO();
-		dto.setName("Amit");
-		//dto.setAddress("address");
-		dto.setAccountNumber("123456");
+	private static void testAdd() throws Exception, Exception {
+		BankDTO dto= new BankDTO();
+		
+		dto.setName("shivanshi");
 		dto.setDob(new Date());
-		dto.setStatus("Active");
-		dto.setSalary("9000");
-		//BankModelInt bankModel=ModelFactory.getInstance().getBankModel();
-		EmployeeModelInt EmployeeModel=ModelFactory.getInstance().getEmployeeModel();
-		EmployeeModel.add(dto);
+		dto.setAccountNumber("12345");
+		dto.setAddress("Rewa");
+		
+		BankModelInt bankModel = ModelFactory.getInstance().getBankModel();
+		bankModel.add(dto);
+		
 		
 		
 	}

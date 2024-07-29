@@ -7,9 +7,8 @@ import org.hibernate.cfg.Configuration;
 /**
  * Hibernate DataSource is provides the object of sessionfactory and session
  * 
- * 
  * @author Ankit Rajput
- *
+ * 
  */
 public class HibDataSource {
 	private static SessionFactory sessionFactory = null;
@@ -24,6 +23,7 @@ public class HibDataSource {
 
 	public static Session getSession() {
 
+		
 		Session session = getSessionFactory().openSession();
 		return session;
 

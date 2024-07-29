@@ -20,7 +20,7 @@ import in.co.rays.project_3.util.PropertyReader;
 import in.co.rays.project_3.util.ServletUtility;
 
 /**
- *College list ctl.to perform search and show list operation
+ *college list ctl to perform search and show list operation
  * @author Ankit Rajput
  *
  */

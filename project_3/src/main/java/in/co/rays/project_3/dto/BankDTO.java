@@ -2,13 +2,15 @@ package in.co.rays.project_3.dto;
 
 import java.util.Date;
 
-import in.co.rays.project_3.util.DataUtility;
-
-public class BankDTO extends BaseDTO {
+public class BankDTO extends BaseDTO{
+	
 	private String name;
 	private Date dob;
 	private String accountNumber;
 	private String address;
+	
+	
+	
 
 	public String getName() {
 		return name;
@@ -45,14 +47,13 @@ public class BankDTO extends BaseDTO {
 	@Override
 	public String getKey() {
 		// TODO Auto-generated method stub
-		return id + "";
+		return null;
 	}
 
 	@Override
 	public String getValue() {
 		// TODO Auto-generated method stub
-		return DataUtility.getDateString(dob);
-		
+		return null;
 	}
 
 }

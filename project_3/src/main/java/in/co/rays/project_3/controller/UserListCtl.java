@@ -31,18 +31,13 @@ import in.co.rays.project_3.util.ServletUtility;
 public class UserListCtl extends BaseCtl {
 
 	private static final long serialVersionUID = 1L;
-	 /** The log. */
 	private static Logger log = Logger.getLogger(UserListCtl.class);
 
 	protected void preload(HttpServletRequest request) {
 		RoleModelInt model = ModelFactory.getInstance().getRoleModel();
-		UserModelInt umodel= ModelFactory.getInstance().getUserModel();
-		
 		try {
 			List list = model.list();
-			List ulist = umodel.list();
 			request.setAttribute("roleList", list);
-			request.setAttribute("uList", ulist);
 		} catch (Exception e) {
 			log.error(e);
 
@@ -54,7 +49,6 @@ public class UserListCtl extends BaseCtl {
 		UserDTO dto = new UserDTO();
 
 		dto.setFirstName(DataUtility.getString(request.getParameter("firstName")));
-		//dto.setFirstName(DataUtility.getString(request.getParameter("fName")));
 
 		dto.setLastName(DataUtility.getString(request.getParameter("lastName")));
 		dto.setDob(DataUtility.getDate(request.getParameter("dob")));
@@ -65,14 +59,9 @@ public class UserListCtl extends BaseCtl {
 		return dto;
 	}
 
-	 /**
-		 * Contains Display logics.
-		 *
-		 * @param request the request
-		 * @param response the response
-		 * @throws ServletException the servlet exception
-		 * @throws IOException Signals that an I/O exception has occurred.
-		 */
+	/**
+	 * Contains Display logics
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		log.debug("UserListCtl doGet Start");
@@ -80,15 +69,23 @@ public class UserListCtl extends BaseCtl {
 		List next;
 		int pageNo = 1;
 		int pageSize = DataUtility.getInt(PropertyReader.getValue("page.size"));
+		System.out.println("==========" + pageSize);
 		UserDTO dto = (UserDTO) populateDTO(request);
-
-		// get the selected checkbox ids array for delete list
+// get the selected checkbox ids array for delete list
 		UserModelInt model = ModelFactory.getInstance().getUserModel();
 		try {
+			System.out.println("in ctllllllllll search");
 			list = model.search(dto, pageNo, pageSize);
 
 			ArrayList<UserDTO> a = (ArrayList<UserDTO>) list;
 
+			for (UserDTO udto1 : a) {
+				System.out.println(
+						udto1.getRoleId() + "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[--------------------");
+			}
+
+			System.out.println(list + "----------------------------------------------------------");
+			System.out.println(list.indexOf(3));
 			next = model.search(dto, pageNo + 1, pageSize);
 			ServletUtility.setList(list, request);
 			if (list == null || list.size() == 0) {
@@ -115,14 +112,9 @@ public class UserListCtl extends BaseCtl {
 		log.debug("UserListCtl doPOst End");
 	}
 
-	  /**
-		 * Contains Submit logics.
-		 *
-		 * @param request the request
-		 * @param response the response
-		 * @throws ServletException the servlet exception
-		 * @throws IOException Signals that an I/O exception has occurred.
-		 */
+	/**
+	 * Contains Submit logics
+	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -141,7 +133,7 @@ public class UserListCtl extends BaseCtl {
 // get the selected checkbox ids array for delete list
 		String[] ids = request.getParameterValues("ids");
 		UserModelInt model = ModelFactory.getInstance().getUserModel();
-		try {
+		try { 
 
 			if (OP_SEARCH.equalsIgnoreCase(op) || "Next".equalsIgnoreCase(op) || "Previous".equalsIgnoreCase(op)) {
 

@@ -20,7 +20,7 @@ import in.co.rays.project_3.util.PropertyReader;
 import in.co.rays.project_3.util.ServletUtility;
 
 /**
- *  Marksheetmerit list functionality controller to show merit list student
+ *  marksheetmerit list functionlity controller to show merit list student
  * @author Ankit Rajput
  *
  */

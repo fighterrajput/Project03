@@ -5,7 +5,6 @@ import java.util.List;
 import in.co.rays.project_3.dto.CollegeDTO;
 import in.co.rays.project_3.exception.ApplicationException;
 import in.co.rays.project_3.exception.DuplicateRecordException;
-
 /**
  * Interface of College model
  * @author Ankit Rajput

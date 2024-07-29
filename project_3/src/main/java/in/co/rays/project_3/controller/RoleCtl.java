@@ -21,7 +21,7 @@ import in.co.rays.project_3.util.PropertyReader;
 import in.co.rays.project_3.util.ServletUtility;
 
 /**
- * Role functionality controller.to perform add,delete ,update operation
+ * role functionality controller.to perform add,delete ,update operation
  * @author Ankit Rajput
  *
  */

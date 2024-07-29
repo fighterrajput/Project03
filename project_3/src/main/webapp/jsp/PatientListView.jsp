@@ -1,26 +1,51 @@
-<%@page import="in.co.rays.project_3.controller.PatientListCtl"%>
 <%@page import="in.co.rays.project_3.dto.PatientDTO"%>
 <%@page import="in.co.rays.project_3.controller.PatientListCtl"%>
-<%@page import="in.co.rays.project_3.util.HTMLUtility"%>
-<%@page import="java.util.List"%>
+<%@page import="java.util.HashMap"%>
 <%@page import="java.util.Iterator"%>
-<%@page import="in.co.rays.project_3.model.RoleModelInt"%>
+<%@page import="java.util.List"%>
 <%@page import="in.co.rays.project_3.model.ModelFactory"%>
+<%@page import="in.co.rays.project_3.model.RoleModelInt"%>
 <%@page import="in.co.rays.project_3.util.DataUtility"%>
+
+<%@page import="in.co.rays.project_3.util.HTMLUtility"%>
 <%@page import="in.co.rays.project_3.util.ServletUtility"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<script src="<%=ORSView.APP_CONTEXT%>/js/validateInput.js"></script>
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="<%=ORSView.APP_CONTEXT%>/js/utilities.js"></script>
+
+<title>Patient List</title>
 <script src="<%=ORSView.APP_CONTEXT%>/js/jquery.min.js"></script>
 <script type="text/javascript"
-	src="<%=ORSView.APP_CONTEXT%>/js/CheckBox11.js"></script>
+	src="<%=ORSView.APP_CONTEXT%>/js/CheckBox11.js">
+	<script type="text/javascript">
+	function validateMobileNo(event) {
+		const input = event.target;
+		input.value = input.value.replace(/[^0-9.]/g, '')
+		if (input.value.length > 0 && input.value[0] <= '5') {
+			input.value = '';
+		}
+	}
+</script>
+
+<script type="text/javascript">
+	function numberLength(input) {
+		if (input.value.length > 10) {
+			input.value = input.value.slice(0, 10);
+		}
+	}
+</script>
+
 <style>
 .hm {
-	background-image: url('<%=ORSView.APP_CONTEXT%>/img/rain.jpg');
+	background-image: url('<%=ORSView.APP_CONTEXT%>/img/1234.jpeg');
 	background-size: cover;
 	background-repeat: no-repeate;
 	padding-top: 6%;
@@ -43,13 +68,9 @@
 	<%@include file="calendar.jsp"%>
 	<div></div>
 	<div>
-		<form class="pb-5" action="<%=ORSView.PATIENT_LIST_CTL%>"
-			method="post">
+		<form class="pb-5" action="<%=ORSView.PATIENT_LIST_CTL%>" method="post">
 			<jsp:useBean id="dto" class="in.co.rays.project_3.dto.PatientDTO"
 				scope="request"></jsp:useBean>
-			<%
-				List list1 = (List) request.getAttribute("mt");
-			%>
 
 
 			<%
@@ -57,8 +78,6 @@
 				int pageSize = ServletUtility.getPageSize(request);
 				int index = ((pageNo - 1) * pageSize) + 1;
 				int nextPageSize = DataUtility.getInt(request.getAttribute("nextListSize").toString());
-				RoleDTO rbean1 = new RoleDTO();
-				RoleModelInt rmodel = ModelFactory.getInstance().getRoleModel();
 
 				List list = ServletUtility.getList(request);
 
@@ -66,10 +85,17 @@
 				if (list.size() != 0) {
 			%>
 			<center>
-				<h1 class="text-primary font-weight-bold pt-3">
+				<h1 class="text-secondary font-weight-bold pt-3">
 					<u>Patient List</u>
 				</h1>
 			</center>
+
+
+
+			<%
+				HashMap map = (HashMap) request.getAttribute("diseasee");
+			%>
+
 			<div class="row">
 				<div class="col-md-4"></div>
 				<%
@@ -105,52 +131,55 @@
 				%>
 				<div class="col-md-4"></div>
 			</div>
-
 			<div class="row">
-
-
-				<div class="col-sm-2"></div>
+				<div class="col-sm-1"></div>
 				<div class="col-sm-2">
 					<input type="text" name="name" placeholder="Enter Name"
 						class="form-control"
+						oninput="handleLetterInput(this, 'nameError', 200)"
+						onblur="validateLetterInput(this, 'nameError', 200)"
 						value="<%=ServletUtility.getParameter("name", request)%>">
+					<font color="red" class="pl-sm-5" id="nameError"></font>
+
 				</div>
+
+				<div class="col-sm-2"><%=HTMLUtility.getList("disease", String.valueOf(dto.getDisease()), map)%></div>
+
+
 				<div class="col-sm-2">
-					<input type="text" name=mobile placeholder="Enter mobile"
-						class="form-control"
+					<input type="text" name="mobile"
+						placeholder="Enter mobile" class="form-control"
+						oninput="handleMobileNumberInput(this, 'mobileError', 10)"
+						onblur="validateIntegerInput(this, 'mobileError', 10)"
+						oninput="validateMobileNo(event)" name="mobile"
+						maxlength="10"
 						value="<%=ServletUtility.getParameter("mobile", request)%>">
+					<font color="red" class="pl-sm-5" id="mobileError"></font>
 				</div>
-				&emsp;
-				<div class="col-sm-2"><%=HTMLUtility.getList("decease", String.valueOf(dto.getDecease()), list1)%></div>
-				&emsp; &emsp;
+
+				
+
 				<div class="col-sm-2">
-					<input type="text" name="dateOfVisit"
-						placeholder="Enter dateOfVisit" class="form-control"
+					<input type="text" id="datepicker" name="dateOfVisit"
+						class="form-control" placeholder=" Enter dateOfVisit"
+						readonly="readonly"
 						value="<%=ServletUtility.getParameter("dateOfVisit", request)%>">
-				</div>
-				<%-- <div class="col-sm-2">
-					<input type="text" name="deceade" placeholder="Enter deceade"
-						class="form-control"
-						value="<%=ServletUtility.getParameter("deceade", request)%>">
-				</div>
- --%>				<%-- 
-					&emsp;
-				<div class="col-sm-2"><%=HTMLUtility.getList("nname", String.valueOf(dto.getName()), list1)%></div>
-				&emsp; --%>
 
-				<%-- 		&emsp;
-				<div class="col-sm-2"><%=HTMLUtility.getList("ddob", String.valueOf(dto.getDob()), list1)%></div>
-				&emsp;
- --%>
-
-				<div class="col-sm-2">
-					<input type="submit" class="btn btn-primary btn-md"
-						style="font-size: 15px" name="operation"
-						value="<%=PatientListCtl.OP_SEARCH%>"> &emsp; <input
-						type="submit" class="btn btn-dark btn-md" style="font-size: 15px"
-						name="operation" value="<%=PatientListCtl.OP_RESET%>">
 				</div>
 
+
+
+
+
+				<center>
+					<div class="col-sm-2">
+						<input type="submit" class="btn btn-primary btn-md"
+							style="font-size: 15px" name="operation"
+							value="<%=PatientListCtl.OP_SEARCH%>"> &emsp; <input
+							type="submit" class="btn btn-dark btn-md" style="font-size: 15px"
+							name="operation" value="<%=PatientListCtl.OP_RESET%>">
+					</div>
+				</center>
 
 				<div class="col-sm-2"></div>
 			</div>
@@ -159,15 +188,15 @@
 			<div style="margin-bottom: 20px;" class="table-responsive">
 				<table class="table table-bordered table-dark table-hover">
 					<thead>
-						<tr style="background-color: blue;">
+						<tr style="background-color: purple;">
 
 							<th width="10%"><input type="checkbox" id="select_all"
 								name="Select" class="text"> Select All</th>
 							<th width="5%" class="text">S.NO</th>
 							<th width="15%" class="text">Name</th>
-							<th width="15%" class="text">lastUpatedDate</th>
+							<th width="20%" class="text">Diseasee</th>
 							<th width="15%" class="text">Mobile</th>
-							<th width="20%" class="text">decease</th>
+							<th width="15%" class="text">DateOfVisit</th>
 							<th width="5%" class="text">Edit</th>
 						</tr>
 					</thead>
@@ -183,11 +212,11 @@
 								name="ids" value="<%=dto.getId()%>"></td>
 							<td class="text"><%=index++%></td>
 							<td class="text"><%=dto.getName()%></td>
-							<td class="text"><%=DataUtility.getDateString(dto.getDateOfVisit())%></td>
-							<td class="text"><%=dto.getMobile()%></td>
-							<td class="text"><%=dto.getDecease()%></td>
 
-							<%-- <td class="text"><%=rbean.getName()%></td> --%>
+							<td class="text"><%=dto.getDisease()%></td>
+							<td class="text"><%=dto.getMobile()%></td>
+							<td class="text"><%=DataUtility.getDateString(dto.getDateOfVisit())%></td>
+
 							<td class="text"><a href="PatientCtl?id=<%=dto.getId()%>">Edit</a></td>
 						</tr>
 					</tbody>
@@ -282,4 +311,5 @@
 
 
 </body>
-<%@include file="FooterView.jsp"%></html>
+<%@include file="FooterView.jsp"%>
+</html>

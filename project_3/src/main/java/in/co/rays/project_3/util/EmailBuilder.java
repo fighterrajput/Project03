@@ -51,7 +51,7 @@ public class EmailBuilder {
 		StringBuilder msg = new StringBuilder();
 
 		msg.append("<HTML><BODY>");
-		msg.append("<H1>Your password is recovered !! " + map.get("firstName") + " " + map.get("lastName") + "</H1>");
+		msg.append("<H1>Your password is reccovered !! " + map.get("firstName") + " " + map.get("lastName") + "</H1>");
 		/*
 		 * msg.append("<P>To access account user login ID : " + map.get("login")
 		 * + " and password " + map.get("password") + "</P>");

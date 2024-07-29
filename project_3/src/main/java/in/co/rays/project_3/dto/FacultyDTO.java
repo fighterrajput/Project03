@@ -3,8 +3,7 @@ package in.co.rays.project_3.dto;
 import java.util.Date;
 
 /**
- *  Faculty JavaDto encapsulates faculty attributes
- * 
+ *  faculty JavaDto encapsulates faculty attributes
  * @author Ankit Rajput
  *
  */

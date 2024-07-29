@@ -1,86 +1,34 @@
 package in.co.rays.project_3.dto;
 
+
 import java.sql.Timestamp;
 import java.util.Date;
-
 /**
- * User JavaDto encapsulates user attributes
+ * 
+ * user JavaDto encapsulates user attributes
+ * 
  * 
  * @author Ankit Rajput
  *
  */
+
 public class UserDTO extends BaseDTO {
-	/**
-	 * Lock Active constant for User
-	 */
+	 
 	public static final String ACTIVE = "Active";
-
-	/**
-	 * Lock Inactive constant for User
-	 */
 	public static final String INACTIVE = "Inactive";
-
-	/**
-	 * First Name of User
-	 */
 	private String firstName;
-
-	/**
-	 * Last Name of User
-	 */
 	private String lastName;
-	/**
-	 * Login of User
-	 */
 	private String login;
-
-	/**
-	 * Password of User
-	 */
 	private String password;
-
-	/**
-	 * Confirm password of User
-	 */
 	private String confirmPassword;
-	/**
-	 * Date of Birth of User
-	 */
 	private Date dob;
-	/**
-	 * Mobile Number of User
-	 */
 	private String mobileNo;
-	/**
-	 * number of unsuccessful login attempt
-	 */
 	private int unSuccessfullLogin;
-	/**
-	 * Gender of User
-	 */
 	private String gender;
-	/**
-	 * Role of User
-	 */
 	private long roleId;
-
-	/**
-	 * IP Address of User of his last login
-	 */
 	private Timestamp lastLogin;
-
-	/**
-	 * IP Address of User from where User was registred.
-	 */
 	private String registeredIP;
-	/**
-	 * last login Timestamp
-	 */
 	private String loginIP;
-
-	/**
-	 * accessor
-	 */
 
 	public String getFirstName() {
 		return firstName;
@@ -186,6 +134,8 @@ public class UserDTO extends BaseDTO {
 		this.loginIP = loginIP;
 	}
 
+	
+
 	public static String getActive() {
 		return ACTIVE;
 	}
@@ -194,24 +144,16 @@ public class UserDTO extends BaseDTO {
 		return INACTIVE;
 	}
 
-	
-	  public String getKey() {
-	  
-	  return id + ""; 
-	  }
-	  
-	  public String getValue() {
-	  
-	  return firstName + "" + lastName; 
-	  }
-	  
-	 
-	/*
-	 * @Override public String getKey() { // TODO Auto-generated method stub return
-	 * firstName; }
-	 * 
-	 * @Override public String getValue() { // TODO Auto-generated method stub
-	 * return firstName; }
-	 */
+
+
+	public String getKey() {
+
+		return firstName;
+	}
+
+	public String getValue() {
+
+		return firstName ;
+	}
 
 }

@@ -1,13 +1,10 @@
 package in.co.rays.project_3.model;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
@@ -15,19 +12,14 @@ import org.hibernate.criterion.Restrictions;
 import in.co.rays.project_3.dto.BankDTO;
 import in.co.rays.project_3.exception.ApplicationException;
 import in.co.rays.project_3.exception.DuplicateRecordException;
-import in.co.rays.project_3.exception.RecordNotFoundException;
-import in.co.rays.project_3.util.EmailBuilder;
-import in.co.rays.project_3.util.EmailMessage;
-import in.co.rays.project_3.util.EmailUtility;
 import in.co.rays.project_3.util.HibDataSource;
 
-public class BankModelHibImp  implements  BankModelInt{
-
+public class BankModelHibImp implements BankModelInt{
 	
+
 	public long add(BankDTO dto) throws ApplicationException, DuplicateRecordException {
-
-
-		BankDTO existDto = null;
+		
+        BankDTO existDto = null;
 		
 		Session session = HibDataSource.getSession();
 		Transaction tx = null;
@@ -49,12 +41,14 @@ public class BankModelHibImp  implements  BankModelInt{
 		} finally {
 			session.close();
 		}
+
 		return dto.getId();
 
-	}
 
+}
 	
 	public void delete(BankDTO dto) throws ApplicationException {
+		
 		Session session = null;
 		Transaction tx = null;
 		try {
@@ -70,10 +64,12 @@ public class BankModelHibImp  implements  BankModelInt{
 		} finally {
 			session.close();
 		}
+
 	}
-
-
+	
+	
 	public void update(BankDTO dto) throws ApplicationException, DuplicateRecordException {
+
 		Session session = null;
 		/*
 		 * Transaction tx = null; BankDTO exesistDto = findByLogin(dto.getLogin());
@@ -96,11 +92,11 @@ public class BankModelHibImp  implements  BankModelInt{
 		} finally {
 			session.close();
 		}
+
 	}
-
 	
-
 	public BankDTO findByPK(long pk) throws ApplicationException {
+		
 		Session session = null;
 		BankDTO dto = null;
 		try {
@@ -114,11 +110,13 @@ public class BankModelHibImp  implements  BankModelInt{
 		}
 
 		return dto;
+
+		
 	}
-
 	
-
+	
 	public BankDTO findByLogin(String login) throws ApplicationException {
+		
 		Session session = null;
 		BankDTO dto = null;
 		try {
@@ -138,17 +136,11 @@ public class BankModelHibImp  implements  BankModelInt{
 		}
 
 		return dto;
+
 	}
-
-	
-	public List list() throws ApplicationException {
-		return list(0, 0);
-	}
-
-	
-
 	public List list(int pageNo, int pageSize) throws ApplicationException {
-		// TODO Auto-generated method stub
+		
+		
 		Session session = null;
 		List list = null;
 		try {
@@ -169,17 +161,11 @@ public class BankModelHibImp  implements  BankModelInt{
 		}
 
 		return list;
+		
+		
 	}
-
-	
-	public List search(BankDTO dto) throws ApplicationException {
-		// TODO Auto-generated method stub
-		return search(dto, 0, 0);
-	}
-
-	
 	public List search(BankDTO dto, int pageNo, int pageSize) throws ApplicationException {
-		// TODO Auto-generated method stub
+		
 
 		Session session = null;
 		ArrayList<BankDTO> list = null;
@@ -235,17 +221,24 @@ public class BankModelHibImp  implements  BankModelInt{
 		}
 
 		return list;
+}
+
+	@Override
+	public List list() throws ApplicationException {
+		// TODO Auto-generated method stub
+		return list(0,0);
 	}
 
-	
+	@Override
+	public List search(BankDTO dto) throws ApplicationException {
+		// TODO Auto-generated method stub
+		return search(dto,0,0);
+	}
 
+	@Override
 	public List getRoles(BankDTO dto) throws ApplicationException {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-
-
-	
-	
-
-}
+	}

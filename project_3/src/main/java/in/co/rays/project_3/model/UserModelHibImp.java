@@ -10,7 +10,9 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
 
 import in.co.rays.project_3.dto.UserDTO;
@@ -30,18 +32,10 @@ import in.co.rays.project_3.util.HibDataSource;
  */
 public class UserModelHibImp implements UserModelInt {
 
-	/**
-	 * Add a User.
-	 *
-	 * @param dto the bean
-	 * @return the long
-	 * @throws DuplicateRecordException the duplicate record exception
-	 * @throws RecordNotFoundException  the record not found exception
-	 * @throws ApplicationException     the application exception
-	 */
 	public long add(UserDTO dto) throws ApplicationException, DuplicateRecordException {
 
-		System.out.println("in addddddddddddd");
+		System.out.println("in add");
+		// TODO Auto-generated method stub
 		/* log.debug("usermodel hib start"); */
 
 		UserDTO existDto = null;
@@ -50,13 +44,17 @@ public class UserModelHibImp implements UserModelInt {
 			throw new DuplicateRecordException("login id already exist");
 		}
 		Session session = HibDataSource.getSession();
+
+		/*
+		 * SessionFactory sf = new Configuration().configure().buildSessionFactory();
+		 * Session session = sf.openSession();
+		 */
 		Transaction tx = null;
 		try {
 
 			tx = session.beginTransaction();
 
 			session.save(dto);
-
 			dto.getId();
 			tx.commit();
 		} catch (HibernateException e) {
@@ -75,12 +73,6 @@ public class UserModelHibImp implements UserModelInt {
 
 	}
 
-	/**
-	 * Delete a User.
-	 *
-	 * @param dto the bean
-	 * @throws ApplicationException the application exception
-	 */
 	public void delete(UserDTO dto) throws ApplicationException {
 		// TODO Auto-generated method stub
 		Session session = null;
@@ -100,27 +92,19 @@ public class UserModelHibImp implements UserModelInt {
 		}
 	}
 
-	/**
-	 * Update a user.
-	 *
-	 * @param bean the bean
-	 * @throws ApplicationException     the application exception
-	 * @throws DuplicateRecordException the duplicate record exception
-	 * @throws RecordNotFoundException  the record not found exception
-	 */
 	public void update(UserDTO dto) throws ApplicationException, DuplicateRecordException {
 		// TODO Auto-generated method stub
 		Session session = null;
 		Transaction tx = null;
-		UserDTO exesistDto = findByLogin(dto.getLogin());
-
-		if (exesistDto != null && exesistDto.getId() != dto.getId()) {
-			throw new DuplicateRecordException("Login id already exist");
+		UserDTO existDto = findByLogin(dto.getLogin());
+		// Check if updated LoginId already exist
+		if (existDto != null && existDto.getId() != dto.getId()) {
+			throw new DuplicateRecordException("LoginId is already exist");
 		}
 
 		try {
 			session = HibDataSource.getSession();
-			tx = session.beginTransaction();
+ 			tx = session.beginTransaction();
 			session.saveOrUpdate(dto);
 			tx.commit();
 		} catch (HibernateException e) {
@@ -133,14 +117,6 @@ public class UserModelHibImp implements UserModelInt {
 		}
 	}
 
-	/**
-	 * Find User by PK.
-	 *
-	 * @param pk : get parameter
-	 * @return bean
-	 * @throws ApplicationException the application exception
-	 */
-
 	public UserDTO findByPK(long pk) throws ApplicationException {
 		// TODO Auto-generated method stub
 		Session session = null;
@@ -148,7 +124,6 @@ public class UserModelHibImp implements UserModelInt {
 		try {
 			session = HibDataSource.getSession();
 			dto = (UserDTO) session.get(UserDTO.class, pk);
-
 		} catch (HibernateException e) {
 			throw new ApplicationException("Exception : Exception in getting User by pk");
 		} finally {
@@ -157,14 +132,6 @@ public class UserModelHibImp implements UserModelInt {
 
 		return dto;
 	}
-
-	/**
-	 * Find User by Login.
-	 *
-	 * @param login : get parameter
-	 * @return bean
-	 * @throws ApplicationException the application exception
-	 */
 
 	public UserDTO findByLogin(String login) throws ApplicationException {
 		// TODO Auto-generated method stub
@@ -189,25 +156,10 @@ public class UserModelHibImp implements UserModelInt {
 		return dto;
 	}
 
-	/**
-	 * Get List of User.
-	 *
-	 * @return list : List of User
-	 * @throws ApplicationException the application exception
-	 */
 	public List list() throws ApplicationException {
 		// TODO Auto-generated method stub
 		return list(0, 0);
 	}
-
-	/**
-	 * Get List of User with pagination.
-	 *
-	 * @param pageNo   : Current Page No.
-	 * @param pageSize : Size of Page
-	 * @return list : List of users
-	 * @throws ApplicationException the application exception
-	 */
 
 	public List list(int pageNo, int pageSize) throws ApplicationException {
 		// TODO Auto-generated method stub
@@ -233,33 +185,16 @@ public class UserModelHibImp implements UserModelInt {
 		return list;
 	}
 
-	/**
-	 * Search User.
-	 *
-	 * @param bean : Search Parameters
-	 * @return the list
-	 * @throws ApplicationException the application exception
-	 */
 	public List search(UserDTO dto) throws ApplicationException {
 		// TODO Auto-generated method stub
 		return search(dto, 0, 0);
 	}
 
-	/**
-	 * Search User with pagination.
-	 *
-	 * @param bean     : Search Parameters
-	 * @param pageNo   : Current Page No.
-	 * @param pageSize : Size of Page
-	 * @return list : List of Users
-	 * @throws ApplicationException the application exception
-	 */
 	public List search(UserDTO dto, int pageNo, int pageSize) throws ApplicationException {
 		// TODO Auto-generated method stub
 
 		System.out.println(
 				"hellllo" + pageNo + "....." + pageSize + "........" + dto.getId() + "......" + dto.getRoleId());
-
 		Session session = null;
 		ArrayList<UserDTO> list = null;
 		try {
@@ -286,7 +221,7 @@ public class UserModelHibImp implements UserModelInt {
 					criteria.add(Restrictions.like("gender", dto.getGender() + "%"));
 				}
 				if (dto.getDob() != null && dto.getDob().getDate() > 0) {
-					criteria.add(Restrictions.like("dob", dto.getDob()));
+					criteria.add(Restrictions.eq("dob", dto.getDob()));
 				}
 				if (dto.getLastLogin() != null && dto.getLastLogin().getTime() > 0) {
 					criteria.add(Restrictions.eq("lastLogin", dto.getLastLogin()));
@@ -314,27 +249,19 @@ public class UserModelHibImp implements UserModelInt {
 		return list;
 	}
 
-	/**
-	 * Authenticate.
-	 *
-	 * @param login    : String login
-	 * @param password password : String Password
-	 * @return the user bean
-	 * @throws ApplicationException the application exception
-	 */
 	public UserDTO authenticate(String login, String password) throws ApplicationException {
 		// TODO Auto-generated method stub
-		System.out.println(login + "kkkkk" + password);
+		System.out.println(login + "ggggggg" + password);
 		Session session = null;
-		UserDTO dto = null;
+		UserDTO dto = null; 
 		session = HibDataSource.getSession();
 		Query q = session.createQuery("from UserDTO where login=? and password=?");
-
 		q.setString(0, login);
 		q.setString(1, password);
 		List list = q.list();
 		if (list.size() > 0) {
 			dto = (UserDTO) list.get(0);
+
 		} else {
 			dto = null;
 
@@ -342,28 +269,10 @@ public class UserModelHibImp implements UserModelInt {
 		return dto;
 	}
 
-	/**
-	 * Get User Roles
-	 * 
-	 * @return List : User Role List
-	 * @param bean
-	 * @throws ApplicationException
-	 */
 	public List getRoles(UserDTO dto) throws ApplicationException {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	/**
-	 * Change password.
-	 *
-	 * @param id          : long id
-	 * @param oldPassword password : String oldPassword
-	 * @param newPassword : String newPassword
-	 * @return true, if successful
-	 * @throws RecordNotFoundException the record not found exception
-	 * @throws ApplicationException    the application exception
-	 */
 
 	public boolean changePassword(long id, String newPassword, String oldPassword)
 			throws ApplicationException, RecordNotFoundException {
@@ -372,7 +281,7 @@ public class UserModelHibImp implements UserModelInt {
 		UserDTO dtoExist = null;
 
 		dtoExist = findByPK(id);
-
+		System.out.println("in method password" + dtoExist.getPassword() + "jjjjjjj" + oldPassword);
 		if (dtoExist != null && dtoExist.getPassword().equals(oldPassword)) {
 			dtoExist.setPassword(newPassword);
 			try {
@@ -408,15 +317,6 @@ public class UserModelHibImp implements UserModelInt {
 
 	}
 
-	/**
-	 * Send the password of User to his Email.
-	 *
-	 * @param login : User Login
-	 * @return boolean : true if success otherwise false
-	 * @throws RecordNotFoundException : if user not found
-	 * @throws ApplicationException    the application exception
-	 */
-
 	public boolean forgetPassword(String login) throws ApplicationException, RecordNotFoundException {
 		// TODO Auto-generated method stub
 		UserDTO userData = findByLogin(login);
@@ -427,35 +327,24 @@ public class UserModelHibImp implements UserModelInt {
 		}
 
 		HashMap<String, String> map = new HashMap<String, String>();
-
+//		map.put("login", userData.getLogin());
 		map.put("login", userData.getLogin());
+
 		map.put("password", userData.getPassword());
 		map.put("firstName", userData.getFirstName());
 		map.put("lastName", userData.getLastName());
-
 		String message = EmailBuilder.getForgetPasswordMessage(map);
-
 		EmailMessage msg = new EmailMessage();
-
 		msg.setTo(login);
 		msg.setSubject("SUNARYS ORS Password reset");
 		msg.setMessage(message);
 		msg.setMessageType(EmailMessage.HTML_MSG);
 		EmailUtility.sendMail(msg);
+		
 		flag = true;
 
 		return flag;
 	}
-
-	/**
-	 * Reset Password of User with auto generated Password.
-	 *
-	 * @param bean the bean
-	 * @return boolean : true if success otherwise false
-	 * 
-	 *         : User Login
-	 * @throws ApplicationException the application exception
-	 */
 
 	public boolean resetPassword(UserDTO dto) throws ApplicationException, RecordNotFoundException {
 		// TODO Auto-generated method stub
@@ -487,15 +376,6 @@ public class UserModelHibImp implements UserModelInt {
 		return true;
 	}
 
-	/**
-	 * Register a user.
-	 *
-	 * @param bean the bean
-	 * @return the long
-	 * @throws DuplicateRecordException : throws when user already exists
-	 * @throws RecordNotFoundException  the record not found exception
-	 * @throws ApplicationException     the application exception
-	 */
 	public long registerUser(UserDTO dto) throws ApplicationException, DuplicateRecordException {
 		// TODO Auto-generated method stub
 		long pk = add(dto);
