@@ -7,12 +7,11 @@
 	<session-factory>
 		<property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
 
-<!-- 		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/project3</property>
- -->		<property name="hibernate.connection.url">jdbc:mysql://mysql:3306/project3</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/project3</property>
+		<!-- <property name="hibernate.connection.url">jdbc:mysql://mysql:3306/project3</property> -->
+		<property name="hibernate.connection.username">riya</property>
 
-		<property name="hibernate.connection.username">root</property>
-
-		<property name="hibernate.connection.password">root</property>
+		<property name="hibernate.connection.password">indore@123</property>
 
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 
@@ -65,10 +64,24 @@
 		<mapping resource="in/co/rays/project_3/hbm/HotelDTO.hbm.xml" />
 		<mapping resource="in/co/rays/project_3/hbm/OrderDTO.hbm.xml" />
 		<mapping resource="in/co/rays/project_3/hbm/IssueDTO.hbm.xml" />
-		<mapping resource="in/co/rays/project_3/hbm/ProjectDTO.hbm.xml" />
-		<mapping resource="in/co/rays/project_3/hbm/JobDTO.hbm.xml"/>
-		<mapping resource="in/co/rays/project_3/hbm/SalaryDTO.hbm.xml"/>
-		<mapping resource="in/co/rays/project_3/hbm/FieldDTO.hbm.xml"/>
-
+		<mapping
+			resource="in/co/rays/project_3/hbm/ProjectDTO.hbm.xml" />
+		<mapping resource="in/co/rays/project_3/hbm/JobDTO.hbm.xml" />
+		<mapping resource="in/co/rays/project_3/hbm/SalaryDTO.hbm.xml" />
+		<mapping resource="in/co/rays/project_3/hbm/FieldDTO.hbm.xml" />
+		<mapping
+			resource="in/co/rays/project_3/hbm/VehicleTrackingDTO.hbm.xml" />
+		<mapping resource="in/co/rays/project_3/hbm/RouteDTO.hbm.xml" />
+		<mapping resource="in/co/rays/project_3/hbm/AtmDTO.hbm.xml" />
+		<mapping
+			resource="in/co/rays/project_3/hbm/TransactionDTO.hbm.xml" />
+		<mapping resource="in/co/rays/project_3/hbm/LoanDTO.hbm.xml" />
+		<mapping resource="in/co/rays/project_3/hbm/OwnerDTO.hbm.xml"/>
+		<mapping resource="in/co/rays/project_3/hbm/ShoppingDTO.hbm.xml"/>
+		<mapping resource="in/co/rays/project_3/hbm/WishDTO.hbm.xml"/>
+		<mapping resource="in/co/rays/project_3/hbm/VehicleDTO.hbm.xml"/>
+		<mapping resource="in/co/rays/project_3/hbm/PatientDTO.hbm.xml"/>
+		<mapping resource="in/co/rays/project_3/hbm/DoctorDTO.hbm.xml"/>
+		<mapping resource="in/co/rays/project_3/hbm/PrescriptionDTO.hbm.xml"/>
 	</session-factory>
 </hibernate-configuration>

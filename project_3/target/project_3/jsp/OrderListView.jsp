@@ -1,7 +1,4 @@
-
-
-
-
+<%@page import="java.util.HashMap"%>
 <%@page import="in.co.rays.project_3.controller.OrderListCtl"%>
 <%@page import="in.co.rays.project_3.dto.OrderDTO"%>
 <%@page import="java.util.Iterator"%>
@@ -51,9 +48,7 @@
 		<form class="pb-5" action="<%=ORSView.ORDER_LIST_CTL%>" method="post">
 			<jsp:useBean id="dto" class="in.co.rays.project_3.dto.OrderDTO"
 				scope="request"></jsp:useBean>
-			<%
-				List list1 = (List) request.getAttribute("product");
-			%>
+			
 
 
 			<%
@@ -74,6 +69,12 @@
 					<u>Order List</u>
 				</h1>
 			</center>
+			
+				<%
+									HashMap map = (HashMap) request.getAttribute("productt");
+								%>
+
+			
 			<div class="row">
 				<div class="col-md-4"></div>
 				<%
@@ -115,32 +116,37 @@
 
 				<div class="col-sm-2"></div>
 				<div class="col-sm-2">
-					<input type="text" name="name" placeholder="Enter Name"
-						class="form-control"
-						value="<%=ServletUtility.getParameter("name", request)%>">
+					<input type="text" class="form-control" name=amount
+						placeholder=" Enter InsuranceAmount"
+						oninput="handleIntegerInput(this, 'amountError', 10)"
+						onblur="validateIntegerInput(this, 'amountError', 10)"
+						value="<%=ServletUtility.getParameter("amount", request)%>">
+					<font color="red" class="pl-sm-5" id="amountError"></font>
+
 				</div>
+
 				<div class="col-sm-2">
-					<input type="text" name="quality" placeholder="Enter quality"
-						class="form-control"
-						value="<%=ServletUtility.getParameter("quality", request)%>">
+					<input type="text" class="form-control" name=quantity
+						placeholder=" Enter Quantity"
+						oninput="handleIntegerInput(this, 'quantityError', 10)"
+						onblur="validateIntegerInput(this, 'quantityError', 10)"
+						value="<%=ServletUtility.getParameter("quantity", request)%>">
+					<font color="red" class="pl-sm-5" id="quantityError"></font>
+
 				</div>
-				<%-- <div class="col-sm-2">
-					<input type="text" name="product" placeholder="Enter product"
-						class="form-control"
-						value="<%=ServletUtility.getParameter("product", request)%>">
-						
-						
-				</div>
- --%>					<!-- &emsp; -->
-				<div class="col-sm-2"><%=HTMLUtility.getList("product", String.valueOf(dto.getProduct()), list1)%></div>
+
+				
+				<div class="col-sm-2"><%=HTMLUtility.getList("product", String.valueOf(dto.getProduct()), map)%></div>
 
 				
 
 				&emsp;
 				<div class="col-sm-2">
-					<input type="text" name="date" placeholder="Enter date"
-						class="form-control"
+					<input type="text" id="datepicker" name="date"
+						class="form-control" placeholder=" Enter Date"
+						readonly="readonly"
 						value="<%=ServletUtility.getParameter("date", request)%>">
+
 				</div>
 				
 				<center>
@@ -184,9 +190,9 @@
 								name="ids" value="<%=dto.getId()%>"
 								></td>
 							<td class="text"><%=index++%></td>
-							<td class="text"><%=dto.getName()%></td>
+							<td class="text"><%=dto.getAmount()%></td>
 							
-							<td class="text"><%=dto.getQuality()%></td>
+							<td class="text"><%=dto.getQuantity()%></td>
 							<td class="text"><%=dto.getProduct()%></td>
 							<td class="text"><%=DataUtility.getDateString(dto.getDate())%></td>
 							

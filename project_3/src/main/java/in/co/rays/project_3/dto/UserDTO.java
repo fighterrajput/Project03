@@ -8,7 +8,7 @@ import java.util.Date;
  * user JavaDto encapsulates user attributes
  * 
  * 
- * @author Ankit Rajput
+ * @author Riya Rana
  *
  */
 

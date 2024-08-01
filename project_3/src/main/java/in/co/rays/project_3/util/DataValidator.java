@@ -6,7 +6,7 @@ import java.util.Date;
 
 /**
  * DataValidator class is used to validate the data entered by user
- * @author Ankit Rajput
+ * @author Riya Rana
  *
  */
 public class DataValidator 

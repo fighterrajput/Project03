@@ -22,6 +22,8 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="<%=ORSView.APP_CONTEXT%>/js/utilities.js"></script>
+
 <title>Field List</title>
 <script src="<%=ORSView.APP_CONTEXT%>/js/jquery.min.js"></script>
 <script type="text/javascript"
@@ -75,6 +77,7 @@
 
 			<%
 				HashMap map = (HashMap) request.getAttribute("typee");
+					HashMap map1 = (HashMap) request.getAttribute("activee");
 			%>
 
 			<div class="row">
@@ -117,8 +120,11 @@
 				<div class="col-sm-2">
 					<input type="text" name="description"
 						placeholder="Enter Description" class="form-control"
-						onkeypress="return validateInput(event)"
+						oninput="handleLetterInput(this, 'descriptionError', 200)"
+						onblur="validateLetterInput(this, 'descriptionError', 200)"
 						value="<%=ServletUtility.getParameter("description", request)%>">
+					<font color="red" class="pl-sm-5" id="descriptionError"></font>
+
 				</div>
 
 				<%-- <div class="col-sm-2">
@@ -131,25 +137,33 @@
 				
 				
  --%>
-							<div class="col-sm-2"><%=HTMLUtility.getList("type", String.valueOf(dto.getType()), map)%></div>
-			
+				<div class="col-sm-2"><%=HTMLUtility.getList("type", String.valueOf(dto.getType()), map)%></div>
 
 
 
-				<div class="col-sm-2">
+
+				<%-- <div class="col-sm-2">
 					<input type="text" name="active"
 						placeholder="Enter active" class="form-control"
 						value="<%=ServletUtility.getParameter("active", request)%>">
-				</div>
-				
+				</div> --%>
+
+				<div class="col-sm-2"><%=HTMLUtility.getList("active", String.valueOf(dto.getActive()), map1)%></div>
+
+
 				<div class="col-sm-2">
-					<input type="text" name="label"
-						placeholder="Enter label" class="form-control"
+					<input type="text" name="label" placeholder="Enter label"
+						class="form-control"
+						oninput="handleLetterInput(this, 'labelError', 200)"
+						onblur="validateLetterInput(this, 'labelError', 200)"
 						value="<%=ServletUtility.getParameter("label", request)%>">
+					<font color="red" class="pl-sm-5" id="labelError"></font>
+
+
 				</div>
 
 
-				
+
 
 				<center>
 					<div class="col-sm-2">

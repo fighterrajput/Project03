@@ -3,7 +3,7 @@ package in.co.rays.project_3.dto;
 
 /**
  * College JavaBean encapsulates College attributes
- * @author Ankit Rajput
+ * @author Riya Rana
  *
  */
 

@@ -21,6 +21,24 @@
 <script src="<%=ORSView.APP_CONTEXT%>/js/jquery.min.js"></script>
 <script type="text/javascript"
 	src="<%=ORSView.APP_CONTEXT%>/js/CheckBox11.js"></script>
+	
+	<script type="text/javascript">
+function validateMobileNo(event) {
+	const input = event.target;
+	input.value = input.value.replace(/[^0-9.]/g, '')
+	if (input.value.length > 0 && input.value[0]<= '5') {
+		input.value = '';
+	}
+}
+</script>
+
+<script type="text/javascript">
+	function numberLength(input) {
+		if (input.value.length > 10) {
+			input.value = input.value.slice(0, 10);
+		}
+	}
+</script>
 <style>
 .hm {
 	background-image: url('<%=ORSView.APP_CONTEXT%>/img/1234.jpeg');
@@ -112,7 +130,7 @@
 				<div class="col-sm-1"></div>
 				<div class="col-sm-2">
 					<input type="text" name="name" placeholder="Enter Name"
-						class="form-control"
+						class="form-control" onkeypress=" validateInput(event)"
 						value="<%=ServletUtility.getParameter("name", request)%>">
 				</div>
 

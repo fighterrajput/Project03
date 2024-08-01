@@ -2,7 +2,7 @@ package in.co.rays.project_3.exception;
 
 public class RecordNotFoundException extends Exception{
 	/**
-	 * @author Ankit Rajput
+	 * @author Riya Rana
 	 */
 	private static final long serialVersionUID = 1L;
 

@@ -18,6 +18,8 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="<%=ORSView.APP_CONTEXT%>/js/utilities.js"></script>
+
 <title>Issue List</title>
 <script src="<%=ORSView.APP_CONTEXT%>/js/jquery.min.js"></script>
 <script type="text/javascript"
@@ -113,7 +115,11 @@
 				<div class="col-sm-2">
 					<input type="text" name="description"
 						placeholder="Enter Description" class="form-control"
+						oninput="handleLetterInput(this, 'descriptionError', 200)"
+						onblur="validateLetterInput(this, 'descriptionError', 200)"
 						value="<%=ServletUtility.getParameter("description", request)%>">
+					<font color="red" class="pl-sm-5" id="descriptionError"></font>
+
 				</div>
 
 				<%-- <div class="col-sm-2">
@@ -131,17 +137,25 @@
 				<div class="col-sm-2">
 					<input type="text" name="assignTo" placeholder="Enter AssignTo"
 						class="form-control"
+						oninput="handleLetterInput(this, 'assinToError', 200)"
+						onblur="validateLetterInput(this, 'assinToError', 200)"
 						value="<%=ServletUtility.getParameter("assignTo", request)%>">
+					<font color="red" class="pl-sm-5" id="assinToError"></font>
+
 				</div>
 				<div class="col-sm-2">
-					<input type="text" placeholder="Enter title" class="form-control"
+					<input type="text" name="title" placeholder="Enter title" class="form-control"
+						oninput="handleLetterInput(this, 'titleError', 200)"
+						onblur="validateLetterInput(this, 'titleError', 200)"
 						value="<%=ServletUtility.getParameter("title", request)%>">
+					<font color="red" class="pl-sm-5" id="titleError"></font>
+
 
 				</div>
 
 
 				<div class="col-sm-2">
-					<input type="date" name="openDate" class="form-control"
+					<input type="text" id="datepicker" name="openDate" class="form-control"
 						placeholder="OpenDate"
 						value="<%=DataUtility.getDateString(dto.getOpenDate())%>">
 				</div>

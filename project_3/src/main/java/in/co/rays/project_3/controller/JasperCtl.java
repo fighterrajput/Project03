@@ -27,7 +27,7 @@
 	 * Jasper functionality Controller. Performs operation for Print pdf of
 	 * MarksheetMeriteList
 	 * 
-	 * @author Ankit Rajput
+	 * @author Riya Rana
 	 *
 	 */
 
@@ -72,7 +72,8 @@
 		  JasperExportManager.exportReportToPdf(jasperPrint);
 		  
 		  response.setContentType("application/pdf");
-		  response.getOutputStream().write(pdf); response.getOutputStream().flush(); }
+		  response.getOutputStream().write(pdf); 
+		  response.getOutputStream().flush(); }
 		  catch (Exception e) {
 		  
 		  } }

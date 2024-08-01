@@ -10,7 +10,7 @@ import in.co.rays.project_3.exception.DuplicateRecordException;
 
 /**
  * Interface of Subject model
- * @author Ankit Rajput
+ * @author Riya Rana
  *
  */
 public interface SubjectModelInt {

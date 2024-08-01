@@ -1,4 +1,3 @@
-
 <%@page import="in.co.rays.project_3.controller.LoginCtl"%>
 <%@page import="in.co.rays.project_3.controller.ORSView"%>
 <%@page import="in.co.rays.project_3.controller.LoginCtl"%>
@@ -387,7 +386,7 @@
 
 					</div></li> --%>
 
-				<li class="nav-item dropdown" style="padding-left: 5px"><a
+				<%-- <li class="nav-item dropdown" style="padding-left: 5px"><a
 					class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
 					role="button" data-toggle="dropdown" aria-haspopup="true"
 					aria-expanded="false"> <font style="color: white;">Owner</font>
@@ -403,7 +402,7 @@
 
 						</a>
 
-					</div></li>
+					</div></li> --%>
 
 				<%-- <li class="nav-item dropdown" style="padding-left: 5px"><a
 					class="nav-link dropdown-toggle" href="#" id="navbarDropdown"

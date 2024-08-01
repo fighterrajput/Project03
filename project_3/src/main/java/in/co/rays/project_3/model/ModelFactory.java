@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 /**
  * ModelFactory decides which model implementation run
  * 
- * @author Ankit Rajput
+ * @author Riya Rana
  *
  */
 public final class ModelFactory {
@@ -491,24 +491,6 @@ public final class ModelFactory {
 
 		return prescriptionModel;
 	}
-
-
-
-
-
-
-
-
-
-
-
-	
-	
-
-
-
-																																					
-
 
 
 

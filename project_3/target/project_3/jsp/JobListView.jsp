@@ -15,9 +15,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<script src="<%=ORSView.APP_CONTEXT%>/js/validateInput.js"></script>
+
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="<%=ORSView.APP_CONTEXT%>/js/utilities.js"></script>
+
 <title>Job List</title>
 <script src="<%=ORSView.APP_CONTEXT%>/js/jquery.min.js"></script>
 <script type="text/javascript"
@@ -118,12 +122,23 @@
 				<div class="col-sm-2">
 					<input type="text" name="experience" placeholder="Enter Experience"
 						class="form-control"
+						oninput="handleLetterInput(this, 'experienceError', 200)"
+						onblur="validateLetterInput(this, 'experienceError', 200)"
 						value="<%=ServletUtility.getParameter("experience", request)%>">
+
+					<font color="red" class="pl-sm-5" id="experienceError"></font>
+
 				</div>
 				<div class="col-sm-2">
 					<input type="text" name="title" placeholder="Enter title"
 						class="form-control"
+						oninput="handleLetterInput(this, 'titleError', 200)"
+						onblur="validateLetterInput(this, 'titleError', 200)"
+						
 						value="<%=ServletUtility.getParameter("title", request)%>">
+
+					<font color="red" class="pl-sm-5" id="titleError"></font>
+
 				</div>
 				<%-- <div class="col-sm-2">
 					<input type="text" name="status" placeholder="Enter status"
@@ -140,15 +155,25 @@
 				<%-- 				<div class="col-sm-2"><%=HTMLUtility.getList("product", String.valueOf(dto.getProduct()), list1)%></div>
  --%>
 
-
-
 				<div class="col-sm-2">
-					<input type="text" id="datepicker" name="openDate"
-						class="form-control" placeholder="OpenDate" readonly="readonly"
+					<input type="text" id="datepicker" name="openingJob"
+						class="form-control" placeholder="  Enter OpeningJob"
+						readonly="readonly"
+						value="<%=ServletUtility.getParameter("openingJob", request)%>">
+
+				</div>
+
+
+
+
+				<%-- <div class="col-sm-2">
+					<input type="text"  name="openDate"
+						class="form-control" placeholder="OpenDate" 
 						value="<%=ServletUtility.getParameter("openDate", request)%>">
 
 				</div>
 
+ --%>
 				<center>
 					<div class="col-sm-2">
 						<input type="submit" class="btn btn-primary btn-md"

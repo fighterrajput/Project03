@@ -75,8 +75,9 @@ i.css {
 							<!--Body-->
 							<div>
 								<%
-									List list = (List) request.getAttribute("product");
+									HashMap map = (HashMap) request.getAttribute("productt");
 								%>
+
 
 								<H4 align="center">
 									<%
@@ -111,39 +112,46 @@ i.css {
 
 							<div class="md-form">
 
-								<span class="pl-sm-5"><b> ItemName</b> <span
-									style="color: red;">*</span></span> </br>
-								<div class="col-sm-12">
-									<div class="input-group">
-										<div class="input-group-prepend">
-											<div class="input-group-text">
-												<i class="fa fa-user-alt grey-text" style="font-size: 1rem;"></i>
-											</div>
-										</div>
-										<input type="text" class="form-control" name="name"
-											placeholder="Enter Name"
-											value="<%=DataUtility.getStringData(dto.getName())%>">
-									</div>
-								</div>
-								<font color="red" class="pl-sm-5"> <%=ServletUtility.getErrorMessage("name", request)%></font></br>
-								
-								<span class="pl-sm-5"><b>Quality</b> <span
+								<span class="pl-sm-5"><b>Amount</b> <span
 									style="color: red;">*</span></span></br>
 								<div class="col-sm-12">
 									<div class="input-group">
 										<div class="input-group-prepend">
 											<div class="input-group-text">
-												<i class="fa fa-user-circle grey-text"
-													style="font-size: 1rem;"></i>
+												<i class="fa fa-list grey-text" style="font-size: 1rem;"></i>
 											</div>
 										</div>
-										<input type="text" class="form-control" name="quality"
-											placeholder=" Enter quality"
-											value="<%=DataUtility.getStringData(dto.getQuality())%>">
+										<input type="text" class="form-control" name="amount"
+											placeholder=" Enter amount"
+											oninput="handleIntegerInput(this, 'amountError', 10)"
+											onblur="validateIntegerInput(this, 'amountError', 10)"
+											value="<%=DataUtility.getStringData(dto.getAmount()).equals("0") ? ""
+					: DataUtility.getStringData(dto.getAmount())%>">
 									</div>
 								</div>
-								<font color="red" class="pl-sm-5"> <%=ServletUtility.getErrorMessage("quality", request)%></font></br>
-								
+								<font color="red" class="pl-sm-5" id="amountError">
+									<%=ServletUtility.getErrorMessage("amount", request)%></font></br>
+
+								<span class="pl-sm-5"><b>Quantity</b> <span
+									style="color: red;">*</span></span></br>
+								<div class="col-sm-12">
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<div class="input-group-text">
+												<i class="fa fa-list grey-text" style="font-size: 1rem;"></i>
+											</div>
+										</div>
+										<input type="text" class="form-control" name="quantity"
+											placeholder=" Enter quantity"
+											oninput="handleIntegerInput(this, 'quantityError', 10)"
+											onblur="validateIntegerInput(this, 'quantityError', 10)"
+											value="<%=DataUtility.getStringData(dto.getQuantity()).equals("0") ? ""
+					: DataUtility.getStringData(dto.getQuantity())%>">
+									</div>
+								</div>
+								<font color="red" class="pl-sm-5" id="quantityError">
+									<%=ServletUtility.getErrorMessage("quantity", request)%></font></br>
+
 								<span class="pl-sm-5"><b>Product</b> <span
 									style="color: red;">*</span></span></br>
 								<div class="col-sm-12">
@@ -154,15 +162,13 @@ i.css {
 													style="font-size: 1rem;"></i>
 											</div>
 										</div>
-								
-								
-								
-									<%=HTMLUtility.getList("product",String.valueOf(dto.getProduct()),list) %>
+
+
+										<%=HTMLUtility.getList("product", String.valueOf(dto.getProduct()), map)%>
+
+									</div>
 								</div>
-								<%-- 
-								<%
-								if (dto.getId()==null||id<=0) {
-								%> --%>
+								<font color="red" class="pl-sm-5"> <%=ServletUtility.getErrorMessage("product", request)%></font></br>
 
 
 
@@ -170,19 +176,28 @@ i.css {
 
 								<span class="pl-sm-5"><b>Date</b> <span
 									style="color: red;">*</span></span></br>
-								<div class="col-sm-14">
+								<div class="col-sm-12">
 									<div class="input-group">
 										<div class="input-group-prepend">
 											<div class="input-group-text">
 												<i class="fa fa-calendar grey-text" style="font-size: 1rem;"></i>
 											</div>
 										</div>
-										<input type="text" id="datepicker2" name="date"
-											class="form-control" placeholder="date" readonly="readonly"
-											value="<%=DataUtility.getDateString(dto.getDate())%>">
+										<input type="text" id="datepicker" name="date"
+										class="form-control" placeholder="Enter Date"
+										readonly="readonly"
+										value="<%=DataUtility.getDateString(dto.getDate())%>">
+
+
 									</div>
+
 								</div>
 								<font color="red" class="pl-sm-5"> <%=ServletUtility.getErrorMessage("date", request)%></font></br>
+
+
+
+
+
 								<%
 									if (dto.getId() != null && id > 0) {
 								%>

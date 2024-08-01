@@ -1,7 +1,3 @@
-
-
-
-
 <%@page import="in.co.rays.project_3.controller.ProjectCtl"%>
 <%@page import="java.util.List"%>
 
@@ -15,9 +11,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<script src="<%=ORSView.APP_CONTEXT%>/js/validateInput.js"></script>
+
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<script src="<%=ORSView.APP_CONTEXT%>/js/utilities.js"></script>
+
 <title>Project view</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="<%=ORSView.APP_CONTEXT%>/js/utilities.js"></script>
 <style type="text/css">
 i.css {
 	border: 2px solid #8080803b;
@@ -70,15 +71,17 @@ i.css {
 							<%
 								} else {
 							%>
-							<h3 class="text-center default-text text-primary">Add Project</h3>
+							<h3 class="text-center default-text text-primary">Add
+								Project</h3>
 							<%
 								}
 							%>
 							<!--Body-->
-							<%-- <div>
+							<div>
+
 								<%
-									List list = (List) request.getAttribute("product");
-								%> --%>
+									HashMap map = (HashMap) request.getAttribute("categoryy");
+								%>
 
 								<H4 align="center">
 									<%
@@ -124,11 +127,13 @@ i.css {
 										</div>
 										<input type="text" class="form-control" name="name"
 											placeholder="Enter Name"
+											oninput="handleLetterInput(this, 'nameError', 200)"
+											onblur="validateLetterInput(this, 'nameError', 200)"
 											value="<%=DataUtility.getStringData(dto.getName())%>">
 									</div>
 								</div>
-								<font color="red" class="pl-sm-5"> <%=ServletUtility.getErrorMessage("name", request)%></font></br>
-								
+								<font color="red" class="pl-sm-5" id="nameError"> <%=ServletUtility.getErrorMessage("name", request)%></font></br>
+
 								<span class="pl-sm-5"><b>Category</b> <span
 									style="color: red;">*</span></span></br>
 								<div class="col-sm-12">
@@ -139,24 +144,13 @@ i.css {
 													style="font-size: 1rem;"></i>
 											</div>
 										</div>
-										<%-- <input type="text" class="form-control" name="category"
-											placeholder=" Enter Category"
-											value="<%=DataUtility.getStringData(dto.getCategory())%>">
-									 --%>
-									
-									<%
-											HashMap map = new HashMap();
-											map.put("static", "static");
- 											map.put("dynamic", "dynamic");
+										<%=HTMLUtility.getList("category", String.valueOf(dto.getCategory()), map)%>
 
-											String htmlList = HTMLUtility.getList("category", dto.getCategory(), map);
-										%>
-										<%=htmlList%>
-										
-										</div>
+
+									</div>
 								</div>
 								<font color="red" class="pl-sm-5"> <%=ServletUtility.getErrorMessage("category", request)%></font></br>
-								
+
 								<span class="pl-sm-5"><b>Version</b> <span
 									style="color: red;">*</span></span></br>
 								<div class="col-sm-12">
@@ -167,16 +161,24 @@ i.css {
 													style="font-size: 1rem;"></i>
 											</div>
 										</div>
-										<input type="text" class="form-control" name="version"
-											placeholder=" Enter Version"
-											value="<%=DataUtility.getStringData(dto.getVersion())%>">
+										<input type="number" class="form-control" name=version
+											placeholder=" Enter version"
+											oninput="handleIntegerInput(this, 'versionError', 10)"
+											onblur="validateIntegerInput(this, 'versionError', 10)"
+											oninput="numberLength(this)" step="any"
+											value="<%=DataUtility.getString(dto.getVersion())%>"
+											onkeypress="validateNumberKey(event, 'version-validation-message')">
 									</div>
+									<span id="version-validation-message"
+										style="display: none; color: red;">Only number are
+										allowed</span>
+
 								</div>
 								<font color="red" class="pl-sm-5"> <%=ServletUtility.getErrorMessage("version", request)%></font></br>
-								
-								
-			
-								
+
+
+
+
 								<span class="pl-sm-5"><b>OpenDate</b> <span
 									style="color: red;">*</span></span></br>
 								<div class="col-sm-12">
@@ -187,31 +189,23 @@ i.css {
 											</div>
 										</div>
 										<input type="text" id="datepicker" name="openDate"
-											class="form-control" placeholder="OpenDate" readonly="readonly"
+											class="form-control" placeholder="OpenDate"
+											readonly="readonly"
 											value="<%=DataUtility.getDateString(dto.getOpenDate())%>">
 									</div>
 								</div>
 								<font color="red" class="pl-sm-5"> <%=ServletUtility.getErrorMessage("openDate", request)%></font></br>
-								
-								
-									
-									
-								
-								
-								
-								
-<%-- 									<%=HTMLUtility.getList("product",String.valueOf(dto.getProduct()),list) %>
- --%>								
-								<%-- 
+
+
+
+
+
+
+
+
+
+
 								<%
-								if (dto.getId()==null||id<=0) {
-								%> --%>
-
-
-
-
-
-																<%
 									if (dto.getId() != null && id > 0) {
 								%>
 
@@ -219,8 +213,8 @@ i.css {
 
 									<input type="submit" name="operation"
 										class="btn btn-success btn-md" style="font-size: 17px"
-										value="<%=ProjectCtl.OP_UPDATE%>"> <input type="submit"
-										name="operation" class="btn btn-warning btn-md"
+										value="<%=ProjectCtl.OP_UPDATE%>"> <input
+										type="submit" name="operation" class="btn btn-warning btn-md"
 										style="font-size: 17px" value="<%=ProjectCtl.OP_CANCEL%>">
 
 								</div>

@@ -11,9 +11,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<script src="<%=ORSView.APP_CONTEXT%>/js/validateInput.js"></script>
+
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Issue view</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="<%=ORSView.APP_CONTEXT%>/js/utilities.js"></script>
+
 <style type="text/css">
 i.css {
 	border: 2px solid #8080803b;
@@ -72,7 +76,11 @@ i.css {
 							%>
 							<!--Body-->
 							<div>
-								
+
+								<%
+									HashMap map = (HashMap) request.getAttribute("statuss");
+								%>
+
 
 								<H4 align="center">
 									<%
@@ -118,14 +126,16 @@ i.css {
 										</div>
 										<input type="text" class="form-control" name="assinTo"
 											placeholder="Enter AssinTo"
+											oninput="handleLetterInput(this, 'assinToError', 200)"
+											onblur="validateLetterInput(this, 'assinToError', 200)"
 											value="<%=DataUtility.getStringData(dto.getAssinTo())%>">
-											
-											
+
+
 									</div>
 								</div>
-								
-								<font color="red" class="pl-sm-5"> <%=ServletUtility.getErrorMessage("assinTo", request)%></font></br>
-								
+
+								<font color="red" class="pl-sm-5" id="assinToError"> <%=ServletUtility.getErrorMessage("assinTo", request)%></font></br>
+
 								<span class="pl-sm-5"><b>Title</b> <span
 									style="color: red;">*</span></span></br>
 								<div class="col-sm-12">
@@ -136,13 +146,15 @@ i.css {
 													style="font-size: 1rem;"></i>
 											</div>
 										</div>
-										<input type="text" class="form-control" name="title"
+										<textarea name="title" class="form-control" name="title"
 											placeholder=" Enter Title"
-											value="<%=DataUtility.getStringData(dto.getTitle())%>">
+											oninput="handleLetterInput(this, 'titleError', 200)"
+											onblur="validateLetterInput(this, 'titleError', 200)"
+											value="<%=DataUtility.getStringData(dto.getTitle())%>"></textarea>
 									</div>
 								</div>
-								<font color="red" class="pl-sm-5"> <%=ServletUtility.getErrorMessage("title", request)%></font></br>
-								
+								<font color="red" class="pl-sm-5" id="titleError"> <%=ServletUtility.getErrorMessage("title", request)%></font></br>
+
 								<span class="pl-sm-5"><b>Status</b> <span
 									style="color: red;">*</span></span></br>
 								<div class="col-sm-12">
@@ -153,41 +165,39 @@ i.css {
 													style="font-size: 1rem;"></i>
 											</div>
 										</div>
-										<%-- <input type="text" class="form-control" name="status"
-											placeholder=" Enter Status"
-											value="<%=DataUtility.getStringData(dto.getStatus())%>"> --%>
-											
-											<%
-											HashMap map = new HashMap();
-											map.put("Open", "Open");
-											map.put("In Progress", "In Progress");
-											map.put("Hold", "Hold");
-											map.put("Resolve", "Resolve");
-											map.put("Close", "Close");
+				<%=HTMLUtility.getList("status", String.valueOf(dto.getStatus()), map)%>
 
-											String htmlList = HTMLUtility.getList("status", dto.getStatus(), map);
-										%>
-										<%=htmlList%>
-											
-											
+
 									</div>
 								</div>
 								<font color="red" class="pl-sm-5"> <%=ServletUtility.getErrorMessage("status", request)%></font></br>
-								
-								
-			<span class="pl-sm-5"><b>Description</b><span style="color:red;">*</span></span>
-								</br> <div class="col-sm-12">
-                <div class="input-group">
-                <div class="input-group-prepend">
-                <div class="input-group-text"><i class="fa fa-list grey-text" style="font-size: 1rem;"></i> </div>
-        </div>
-       <textarea name="description" placeholder="Enter description" class="form-control"
-		 rows="5" cols="5"><%=DataUtility.getStringData(dto.getDescription())%></textarea>
 
-      </div>
-    </div>
-								
-								<span class="pl-sm-5"><b>OpenDate</b> <span
+
+								<span class="pl-sm-5"><b> Description</b> <span
+									style="color: red;">*</span></span> </br>
+								<div class="col-sm-12">
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<div class="input-group-text">
+												<i class="fa fa-list grey-text" style="font-size: 1rem;"></i>
+											</div>
+										</div>
+										<textarea name="description" placeholder="Enter description"
+											class="form-control"
+											oninput="handleLetterInput(this, 'descriptionError', 200)"
+											onblur="validateLetterInput(this, 'descriptionError', 200)"
+											rows="5" cols="5"><%=DataUtility.getStringData(dto.getDescription())%></textarea>
+
+									</div>
+								</div>
+
+								<font color="red" class="pl-sm-5" id="descriptionError">
+									<%=ServletUtility.getErrorMessage("description", request)%></font></br> 
+									
+					
+									
+									<span
+									class="pl-sm-5"><b>OpenDate</b> <span
 									style="color: red;">*</span></span></br>
 								<div class="col-sm-12">
 									<div class="input-group">
@@ -196,21 +206,21 @@ i.css {
 												<i class="fa fa-calendar grey-text" style="font-size: 1rem;"></i>
 											</div>
 										</div>
-										<input type="date" name="openDate"
-											class="form-control" placeholder="OpenDate" 
+										<input type="text" id="datepicker" name="openDate"
+											class="form-control" placeholder="OpenDate"
 											value="<%=DataUtility.getDateString(dto.getOpenDate())%>">
 									</div>
 								</div>
 								<font color="red" class="pl-sm-5"> <%=ServletUtility.getErrorMessage("openDate", request)%></font></br>
-								
-								
-									
-									
-								
-								
-								
-								
-								
+
+
+
+
+
+
+
+
+
 								<%-- 
 								<%
 								if (dto.getId()==null||id<=0) {
@@ -220,7 +230,7 @@ i.css {
 
 
 
-																<%
+								<%
 									if (dto.getId() != null && id > 0) {
 								%>
 

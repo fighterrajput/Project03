@@ -2,7 +2,7 @@ package in.co.rays.project_3.dto;
 
 /**
  * course JavaDto encapsulates course attributes
- * @author Ankit Rajput
+ * @author Riya Rana
  *
  */
 

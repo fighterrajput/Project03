@@ -15,8 +15,11 @@
 <script src="<%=ORSView.APP_CONTEXT%>/js/validateInput.js"></script>
 </script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
 <title>Job view</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="<%=ORSView.APP_CONTEXT%>/js/utilities.js"></script>
+
 <style type="text/css">
 i.css {
 	border: 2px solid #8080803b;
@@ -75,8 +78,9 @@ i.css {
 							<!--Body-->
 							<div>
 								<%
-									List list = (List) request.getAttribute("assin");
+									HashMap map = (HashMap) request.getAttribute("statuss");
 								%>
+
 
 								<H4 align="center">
 									<%
@@ -122,15 +126,16 @@ i.css {
 										</div>
 										<input type="text" class="form-control" name="experience"
 											placeholder="Enter Experience"
+											oninput="handleLetterInput(this, 'experienceError', 200)"
+											onblur="validateLetterInput(this, 'experienceError', 200)"
 											value="<%=DataUtility.getStringData(dto.getExperience())%>">
-											
-<%-- 									<%=HTMLUtility.getList("assinTo",String.valueOf(dto.getAssinTo()),list) %>
- --%>											
+
+										-
 									</div>
 								</div>
-								
-								<font color="red" class="pl-sm-5"> <%=ServletUtility.getErrorMessage("experience", request)%></font></br>
-								
+
+								<font color="red" class="pl-sm-5" id="experienceError"> <%=ServletUtility.getErrorMessage("experience", request)%></font></br>
+
 								<span class="pl-sm-5"><b>Title</b> <span
 									style="color: red;">*</span></span> </br>
 								<div class="col-sm-12">
@@ -141,13 +146,15 @@ i.css {
 											</div>
 										</div>
 										<textarea name="title" placeholder="Enter Title"
-											class="form-control"  onkeypress="return validateInput(event)"
-											rows="5" cols="5"><%=DataUtility.getStringData(dto.getTitle())%></textarea>
+											class="form-control"
+											oninput="handleLetterInput(this, 'titleError', 200)"
+											onblur="validateLetterInput(this, 'titleError', 200)"
+											onkeypress="return validateInput(event)" rows="5" cols="5"><%=DataUtility.getStringData(dto.getTitle())%></textarea>
 
 									</div>
 								</div>
 
-								<font color="red" class="pl-sm-5"> <%=ServletUtility.getErrorMessage("title", request)%></font></br>
+								<font color="red" class="pl-sm-5" id="titleError"> <%=ServletUtility.getErrorMessage("title", request)%></font></br>
 
 								<span class="pl-sm-5"><b>Status</b> <span
 									style="color: red;">*</span></span></br>
@@ -162,50 +169,43 @@ i.css {
 										<%-- <input type="text" class="form-control" name="status"
 											placeholder=" Enter Status"
 											value="<%=DataUtility.getStringData(dto.getStatus())%>"> --%>
-											
-											<%
-											HashMap map = new HashMap();
-											map.put("Open", "Open");
- 											map.put("Hold", "Hold");
- 											map.put("Close", "Close");
 
-											String htmlList = HTMLUtility.getList("status", dto.getStatus(), map);
-										%>
-										<%=htmlList%>
-											
-											
-									</div>
+										<%=HTMLUtility.getList("status", String.valueOf(dto.getStatus()), map)%>
+
+
 								</div>
-								<font color="red" class="pl-sm-5"> <%=ServletUtility.getErrorMessage("status", request)%></font></br>
-								
-								
-			
-								
-								<span class="pl-sm-5"><b>OpenDate</b> <span
-									style="color: red;">*</span></span></br>
-								<div class="col-sm-12">
-									<div class="input-group">
-										<div class="input-group-prepend">
-											<div class="input-group-text">
-												<i class="fa fa-calendar grey-text" style="font-size: 1rem;"></i>
-											</div>
+							</div>
+							<font color="red" class="pl-sm-5"> <%=ServletUtility.getErrorMessage("status", request)%></font></br>
+
+
+
+
+							<span class="pl-sm-5"><b>OpeningJob</b> <span
+								style="color: red;">*</span></span></br>
+							<div class="col-sm-12">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<div class="input-group-text">
+											<i class="fa fa-calendar grey-text" style="font-size: 1rem;"></i>
 										</div>
-										<input type="text" id="datepicker" name="openingJob"
-											class="form-control" placeholder="OpenDate" readonly="readonly"
-											value="<%=DataUtility.getDateString(dto.getOpeningJob())%>">
 									</div>
+									<input type="text" id="datepicker" name="openingJob"
+										class="form-control" placeholder="openingJob"
+										readonly="readonly"
+										value="<%=DataUtility.getDateString(dto.getOpeningJob())%>">
 								</div>
-								<font color="red" class="pl-sm-5"> <%=ServletUtility.getErrorMessage("openingJob", request)%></font></br>
-								
-								
-									
-									
-								
-								
-								
-								
-								
-								<%-- 
+							</div>
+							<font color="red" class="pl-sm-5"> <%=ServletUtility.getErrorMessage("openingJob", request)%></font></br>
+
+
+
+
+
+
+
+
+
+							<%-- 
 								<%
 								if (dto.getId()==null||id<=0) {
 								%> --%>
@@ -214,37 +214,37 @@ i.css {
 
 
 
-																<%
-									if (dto.getId() != null && id > 0) {
-								%>
+							<%
+								if (dto.getId() != null && id > 0) {
+							%>
 
-								<div class="text-center">
+							<div class="text-center">
 
-									<input type="submit" name="operation"
-										class="btn btn-success btn-md" style="font-size: 17px"
-										value="<%=JobCtl.OP_UPDATE%>"> <input type="submit"
-										name="operation" class="btn btn-warning btn-md"
-										style="font-size: 17px" value="<%=JobCtl.OP_CANCEL%>">
-
-								</div>
-								<%
-									} else {
-								%>
-								<div class="text-center">
-
-									<input type="submit" name="operation"
-										class="btn btn-success btn-md" style="font-size: 17px"
-										value="<%=JobCtl.OP_SAVE%>"> <input type="submit"
-										name="operation" class="btn btn-warning btn-md"
-										style="font-size: 17px" value="<%=JobCtl.OP_RESET%>">
-								</div>
+								<input type="submit" name="operation"
+									class="btn btn-success btn-md" style="font-size: 17px"
+									value="<%=JobCtl.OP_UPDATE%>"> <input type="submit"
+									name="operation" class="btn btn-warning btn-md"
+									style="font-size: 17px" value="<%=JobCtl.OP_CANCEL%>">
 
 							</div>
 							<%
-								}
+								} else {
 							%>
+							<div class="text-center">
+
+								<input type="submit" name="operation"
+									class="btn btn-success btn-md" style="font-size: 17px"
+									value="<%=JobCtl.OP_SAVE%>"> <input type="submit"
+									name="operation" class="btn btn-warning btn-md"
+									style="font-size: 17px" value="<%=JobCtl.OP_RESET%>">
+							</div>
+
 						</div>
+						<%
+							}
+						%>
 					</div>
+				</div>
 		</form>
 		</main>
 		<div class="col-md-4 mb-4"></div>

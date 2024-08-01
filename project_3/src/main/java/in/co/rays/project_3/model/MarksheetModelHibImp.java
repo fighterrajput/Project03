@@ -18,7 +18,7 @@ import in.co.rays.project_3.util.HibDataSource;
 
 /**
  * Hibernate implements of marksheet model
- * @author Ankit Rajput
+ * @author Riya Rana
  *
  */
 public class MarksheetModelHibImp implements MarksheetModelInt {
@@ -249,7 +249,9 @@ e.printStackTrace();
 			 * if (pageSize > 0) { pageNo = (pageNo - 1) * pageSize; hql.append(" limit " +
 			 * pageNo + "," + pageSize); }
 			 */
+			
 			Query query = session.createQuery(hql.toString()).setMaxResults(pageSize);
+			
 			list = query.list();
 
 		} catch (Exception e) {

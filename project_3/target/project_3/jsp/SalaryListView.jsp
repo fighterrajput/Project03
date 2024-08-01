@@ -17,13 +17,25 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Salary List</title>
 <script src="<%=ORSView.APP_CONTEXT%>/js/jquery.min.js"></script>
 <script type="text/javascript"
 	src="<%=ORSView.APP_CONTEXT%>/js/CheckBox11.js"></script>
+<script src="<%=ORSView.APP_CONTEXT%>/js/utilities.js"></script>
+
+<script type="text/javascript">
+	function validateMobileNo(event) {
+		const input = event.target;
+		input.value = input.value.replace(/[^0-9.]/g, '')
+		if (input.value.length > 0 && input.value[0] <= '5') {
+			input.value = '';
+		}
+	}
+</script>
+
+
 <style>
 .hm {
 	background-image: url('<%=ORSView.APP_CONTEXT%>/img/1234.jpeg');
@@ -71,6 +83,8 @@
 				</h1>
 			</center>
 
+
+
 			<%
 				HashMap map = (HashMap) request.getAttribute("statuss");
 			%>
@@ -115,9 +129,26 @@
 				<div class="col-sm-2">
 					<input type="text" name="description"
 						placeholder="Enter Description" class="form-control"
-						onkeypress="return validateInput(event)"
+						oninput="handleLetterInput(this, 'descriptionError', 200)"
+						onblur="validateLetterInput(this, 'descriptionError', 200)"
 						value="<%=ServletUtility.getParameter("description", request)%>">
+
+
+					<font color="red" class="pl-sm-5" id="descriptionError"></font>
 				</div>
+
+				<div class="col-sm-2">
+					<input type="text" name="amount" placeholder="Enter Amount"
+						class="form-control" onkeypress="ValidateKey(event)"
+						maxlength="10"
+						oninput="handleIntegerInput(this, 'amountError', 10)"
+						onblur="validateIntegerInput(this, 'amountError', 10)"
+						value="<%=ServletUtility.getParameter("amount", request)%>">
+
+					<font color="red" class="pl-sm-5" id="amountError"></font>
+				</div>
+
+
 
 				<%-- <div class="col-sm-2">
 					<input type="text" name="status" placeholder="Enter status"
@@ -133,9 +164,15 @@
 
 				<div class="col-sm-2">
 					<input type="text" name="mobileNumber"
-						placeholder="Enter MobileNumber" class="form-control"
+						placeholder="Enter mobileNumber" class="form-control"
+						oninput="handleMobileNumberInput(this, 'mobileNumberError', 10)"
+						onblur="validateIntegerInput(this, 'mobileNumberError', 10)"
+						oninput="validateMobileNo(event)" name="mobileNumber"
+						maxlength="10"
 						value="<%=ServletUtility.getParameter("mobileNumber", request)%>">
+					<font color="red" class="pl-sm-5" id="mobileNumberError"></font>
 				</div>
+
 
 
 				<div class="col-sm-2">
@@ -171,8 +208,6 @@
 							<th width="20%" class="text">Amount</th>
 							<th width="15%" class="text">Status</th>
 							<th width="15%" class="text">MobileNumber</th>
-
-
 							<th width="15%" class="text">AppliedDate</th>
 							<th width="5%" class="text">Edit</th>
 						</tr>

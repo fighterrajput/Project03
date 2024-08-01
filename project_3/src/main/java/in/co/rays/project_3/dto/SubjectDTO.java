@@ -2,7 +2,7 @@ package in.co.rays.project_3.dto;
 
 /**
  * subject JavaDto encapsulates subject attributes
- * @author Ankit Rajput
+ * @author Riya Rana
  *
  */
 

@@ -14,13 +14,16 @@
 <html>
 <head>
 
-</script>
+<script src="<%=ORSView.APP_CONTEXT%>/js/validateInput.js"></script>
+
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<script src="<%=ORSView.APP_CONTEXT%>/js/utilities.js"></script>
+
 <title>Field view</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-</script>
+
 <style type="text/css">
 i.css {
 	border: 2px solid #8080803b;
@@ -31,7 +34,7 @@ i.css {
 
 .input-group-addon {
 	box-shadow: 9px 8px 7px #001a33;
-	background-image: linear-gradient(to bottom right, purple, black);
+	background-image: linear-gradient(to bottom right, navy, white);
 	background-repeat: no repeat;
 	background-size: 100%;
 	padding-bottom: 11px;
@@ -79,7 +82,12 @@ i.css {
 							%>
 							<!--Body-->
 							<div>
-								
+
+								<%
+									HashMap map = (HashMap) request.getAttribute("typee");
+									HashMap map1 = (HashMap) request.getAttribute("activee");
+								%>
+
 								<H4 align="center">
 									<%
 										if (!ServletUtility.getSuccessMessage(request).equals("")) {
@@ -123,16 +131,19 @@ i.css {
 											</div>
 										</div>
 										<textarea name="description" placeholder="Enter description"
-											class="form-control" rows="5" cols="5"><%=DataUtility.getStringData(dto.getDescription())%></textarea>
+											class="form-control"
+											oninput="handleLetterInput(this, 'descriptionError', 200)"
+											onblur="validateLetterInput(this, 'descriptionError', 200)"
+											rows="5" cols="5"><%=DataUtility.getStringData(dto.getDescription())%></textarea>
 
 									</div>
 								</div>
 
-								<font color="red" class="pl-sm-5"> <%=ServletUtility.getErrorMessage("description", request)%></font></br>
-
-
-								<span class="pl-sm-5"><b>Type</b> <span
-									style="color: red;">*</span></span></br>
+								<font color="red" class="pl-sm-5" id="descriptionError">
+									<%=ServletUtility.getErrorMessage("description", request)%></font></br> 
+									
+									<span
+									class="pl-sm-5"><b>Type</b> <span style="color: red;">*</span></span></br>
 								<div class="col-sm-12">
 									<div class="input-group">
 										<div class="input-group-prepend">
@@ -141,41 +152,36 @@ i.css {
 													style="font-size: 1rem;"></i>
 											</div>
 										</div>
-										<%-- <input type="text" class="form-control" name="type"
-											placeholder=" Enter type"
-											value="<%=DataUtility.getStringData(dto.getType())%>">
- --%>
-										<%
-											HashMap map = new HashMap();
-											map.put("Open", "Open");
-											map.put("Hold", "Hold");
-											map.put("Close", "Close");
+										<%=HTMLUtility.getList("type", String.valueOf(dto.getType()), map)%>
 
-											String htmlList = HTMLUtility.getList("type", dto.getType(), map);
-										%>
-										<%=htmlList%>
+
 
 
 									</div>
 								</div>
 								<font color="red" class="pl-sm-5"> <%=ServletUtility.getErrorMessage("type", request)%></font></br>
-								
+
 								<span class="pl-sm-5"><b> Label</b> <span
 									style="color: red;">*</span></span> </br>
 								<div class="col-sm-12">
 									<div class="input-group">
 										<div class="input-group-prepend">
 											<div class="input-group-text">
-												<i class="fa fa-user grey-text" style="font-size: 1rem;"></i>
+												<i class="fa fa-user-alt grey-text" style="font-size: 1rem;"></i>
 											</div>
 										</div>
-										<input type="text" name="label" placeholder="Enter label"
-											class="form-control" rows="5" cols="5"><%=DataUtility.getStringData(dto.getLabel())%>
+										<input type="text" class="form-control" name="label"
+											placeholder="Enter Label"
+											oninput="handleLetterInput(this, 'labelError', 200)"
+											onblur="validateLetterInput(this, 'labelError', 200)"
+											value="<%=DataUtility.getStringData(dto.getLabel())%>">
+
 
 									</div>
 								</div>
 
-								<font color="red" class="pl-sm-5"> <%=ServletUtility.getErrorMessage("label", request)%></font></br>
+								<font color="red" class="pl-sm-5" id="labelError"> <%=ServletUtility.getErrorMessage("label", request)%></font></br>
+
 
 								<span class="pl-sm-5"><b> Active</b> <span
 									style="color: red;">*</span></span> </br>
@@ -185,24 +191,14 @@ i.css {
 											<div class="input-group-text">
 												<i class="fa fa-user grey-text" style="font-size: 1rem;"></i>
 											</div>
+											</div>
+											<%=HTMLUtility.getList("active", String.valueOf(dto.getActive()), map1)%>
+
+
 										</div>
-										<%-- <input type="text" name="active" placeholder="Enter active"
-											class="form-control" rows="5" cols="5"><%=DataUtility.getStringData(dto.getActive())%>
-											
- --%>											<%
-											HashMap map1 = new HashMap();
-											map1.put("Yes", "Yes");
-											map1.put("No", "No");
-
-											String htmlList1 = HTMLUtility.getList("active", dto.getActive(), map1);
-										%>
-										<%=htmlList1%>
-
 									</div>
-								</div>
 
-								<font color="red" class="pl-sm-5"> <%=ServletUtility.getErrorMessage("active", request)%></font></br>
-
+									<font color="red" class="pl-sm-5"> <%=ServletUtility.getErrorMessage("active", request)%></font></br>
 
 
 
@@ -211,7 +207,8 @@ i.css {
 
 
 
-								<%-- 
+
+									<%-- 
 								<%
 								if (dto.getId()==null||id<=0) {
 								%> --%>
@@ -220,37 +217,37 @@ i.css {
 
 
 
-								<%
-									if (dto.getId() != null && id > 0) {
-								%>
+									<%
+										if (dto.getId() != null && id > 0) {
+									%>
 
-								<div class="text-center">
+									<div class="text-center">
 
-									<input type="submit" name="operation"
-										class="btn btn-success btn-md" style="font-size: 17px"
-										value="<%=SalaryCtl.OP_UPDATE%>"> <input type="submit"
-										name="operation" class="btn btn-warning btn-md"
-										style="font-size: 17px" value="<%=SalaryCtl.OP_CANCEL%>">
+										<input type="submit" name="operation"
+											class="btn btn-success btn-md" style="font-size: 17px"
+											value="<%=SalaryCtl.OP_UPDATE%>"> <input
+											type="submit" name="operation" class="btn btn-warning btn-md"
+											style="font-size: 17px" value="<%=SalaryCtl.OP_CANCEL%>">
+
+									</div>
+									<%
+										} else {
+									%>
+									<div class="text-center">
+
+										<input type="submit" name="operation"
+											class="btn btn-success btn-md" style="font-size: 17px"
+											value="<%=SalaryCtl.OP_SAVE%>"> <input type="submit"
+											name="operation" class="btn btn-warning btn-md"
+											style="font-size: 17px" value="<%=SalaryCtl.OP_RESET%>">
+									</div>
 
 								</div>
 								<%
-									} else {
+									}
 								%>
-								<div class="text-center">
-
-									<input type="submit" name="operation"
-										class="btn btn-success btn-md" style="font-size: 17px"
-										value="<%=SalaryCtl.OP_SAVE%>"> <input type="submit"
-										name="operation" class="btn btn-warning btn-md"
-										style="font-size: 17px" value="<%=SalaryCtl.OP_RESET%>">
-								</div>
-
 							</div>
-							<%
-								}
-							%>
 						</div>
-					</div>
 		</form>
 		</main>
 		<div class="col-md-4 mb-4"></div>

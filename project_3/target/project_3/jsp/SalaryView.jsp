@@ -13,11 +13,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<script src="<%=ORSView.APP_CONTEXT%>/js/validateInput.js"></script>
 </script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Salary view</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="<%=ORSView.APP_CONTEXT%>/js/utilities.js"></script>
+<script type="text/javascript">
+	function validateMobileNo(event) {
+		const input = event.target;
+		input.value = input.value.replace(/[^0-9.]/g, '')
+		if (input.value.length > 0 && input.value[0] <= '5') {
+			input.value = '';
+		}
+	}
+</script>
 
 <script type="text/javascript">
 	function numberLength(input) {
@@ -36,7 +45,7 @@ i.css {
 
 .input-group-addon {
 	box-shadow: 9px 8px 7px #001a33;
-	background-image: linear-gradient(to bottom right, purple, black);
+	background-image: linear-gradient(to bottom right, purple, white);
 	background-repeat: no repeat;
 	background-size: 100%;
 	padding-bottom: 11px;
@@ -85,7 +94,7 @@ i.css {
 							<!--Body-->
 							<div>
 								<%
-									List list = (List) request.getAttribute("assin");
+									HashMap map = (HashMap) request.getAttribute("statuss");
 								%>
 
 								<H4 align="center">
@@ -121,6 +130,7 @@ i.css {
 
 							<div class="md-form">
 
+
 								<span class="pl-sm-5"><b> Description</b> <span
 									style="color: red;">*</span></span> </br>
 								<div class="col-sm-12">
@@ -131,30 +141,40 @@ i.css {
 											</div>
 										</div>
 										<textarea name="description" placeholder="Enter description"
-											class="form-control" rows="5" cols="5"><%=DataUtility.getStringData(dto.getDescription())%></textarea>
+											class="form-control"
+											oninput="handleLetterInput(this, 'descriptionError', 200)"
+											onblur="validateLetterInput(this, 'descriptionError', 200)"
+											rows="5" cols="5"><%=DataUtility.getStringData(dto.getDescription())%></textarea>
 
 									</div>
 								</div>
 
-								<font color="red" class="pl-sm-5"> <%=ServletUtility.getErrorMessage("description", request)%></font></br>
+								<font color="red" class="pl-sm-5" id="descriptionError">
+									<%=ServletUtility.getErrorMessage("description", request)%></font></br> 
+									
 
-								<span class="pl-sm-5"><b>Amount</b> <span
-									style="color: red;">*</span></span></br>
+									<span
+									class="pl-sm-5"><b>Amount</b> <span style="color: red;">*</span></span>
+								</br>
 								<div class="col-sm-12">
 									<div class="input-group">
 										<div class="input-group-prepend">
 											<div class="input-group-text">
-												<i class="fa fa-user-circle grey-text"
+												<i class="fa fa-venus-mars grey-text"
 													style="font-size: 1rem;"></i>
 											</div>
 										</div>
-										<input type="number" class="form-control" name="amount"
-											placeholder=" Enter Amount"
+										<input type="text" class="form-control" name="amount"
+											placeholder="Enter Amount"
+											oninput="handleIntegerInput(this, 'amountError', 10)"
+											onblur="validateIntegerInput(this, 'amountError', 10)"
 											value="<%=DataUtility.getStringData(dto.getAmount()).equals("0") ? ""
 					: DataUtility.getStringData(dto.getAmount())%>">
+
 									</div>
 								</div>
-								<font color="red" class="pl-sm-5"> <%=ServletUtility.getErrorMessage("amount", request)%></font></br>
+								<font color="red" class="pl-sm-5" id="amountError"> <%=ServletUtility.getErrorMessage("amount", request)%></font></br>
+
 
 								<span class="pl-sm-5"><b>Status</b> <span
 									style="color: red;">*</span></span></br>
@@ -166,19 +186,8 @@ i.css {
 													style="font-size: 1rem;"></i>
 											</div>
 										</div>
-										<%-- <input type="text" class="form-control" name="status"
-											placeholder=" Enter Status"
-											value="<%=DataUtility.getStringData(dto.getStatus())%>"> --%>
 
-										<%
-											HashMap map = new HashMap();
-											map.put("Open", "Open");
-											map.put("Hold", "Hold");
-											map.put("Close", "Close");
-
-											String htmlList = HTMLUtility.getList("status", dto.getStatus(), map);
-										%>
-										<%=htmlList%>
+										<%=HTMLUtility.getList("status", String.valueOf(dto.getStatus()), map)%>
 
 
 									</div>
@@ -189,24 +198,28 @@ i.css {
 
 
 								<span class="pl-sm-5"><b>MobileNumber</b> <span
-									style="color: red;">*</span></span></br>
+									style="color: red;">*</span></span> </br>
 								<div class="col-sm-12">
 									<div class="input-group">
 										<div class="input-group-prepend">
 											<div class="input-group-text">
-												<i class="fa fa-phone grey-text" style="font-size: 1rem;"></i>
+												<i class="fa fa-phone-square grey-text"
+													style="font-size: 1rem;"></i>
 											</div>
 										</div>
-										<input type="number" class="form-control" id="mobileNumber"
-											oninput="numberLength(this)" name="mobileNumber"
-											placeholder="Enter 10 digit mobileNumber "
-											value="<%=DataUtility.getStringData(dto.getMobileNumber()).equals("0") ? ""
-					: DataUtility.getStringData(dto.getMobileNumber())%>">
+										<input type="text" class="form-control" id="mobileNumber"
+											name="mobileNumber" placeholder="Enter 10 digit mobileNumber"
+											oninput="handleMobileNumberInput(this, 'mobileNumberError', 10)"
+											onblur="validateIntegerInput(this, 'mobileNumberError', 10)"
+											value="<%=DataUtility.getStringData(dto.getMobileNumber())%>">
+
 									</div>
 								</div>
-								<font color="red" class="pl-sm-5"> <%=ServletUtility.getErrorMessage("mobileNumber", request)%></font></br>
-
-								<span class="pl-sm-5"><b>AppliedDate</b> <span
+								<font color="red" class="pl-sm-5" id="mobileNumberError">
+									<%=ServletUtility.getErrorMessage("mobileNumber", request)%></font></br>
+									
+									 <span
+									class="pl-sm-5"><b>AppliedDate</b> <span
 									style="color: red;">*</span></span></br>
 								<div class="col-sm-12">
 									<div class="input-group">
