@@ -7,7 +7,7 @@ import org.hibernate.cfg.Configuration;
 /**
  * Hibernate DataSource is provides the object of sessionfactory and session
  * 
- * @author Riya Rana
+ * @author Ankit Rajput
  * 
  */
 public class HibDataSource {

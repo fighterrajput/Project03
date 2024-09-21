@@ -11,7 +11,7 @@ import in.co.rays.project_3.util.ServletUtility;
 
 /**
  * Error functionality controller.perform error page operation
- * @author Riya Rana
+ * @author Ankit Rajput
  *
  */
 @WebServlet(name="ErrorCtl", urlPatterns={"/ErrorCtl"})

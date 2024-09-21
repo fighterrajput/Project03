@@ -21,7 +21,7 @@ import in.co.rays.project_3.util.ServletUtility;
 
 /**
  * marksheet functionality ctl.to show list of marksheet
- * @author Riya Rana
+ * @author Ankit Rajput
  *
  */ 
 @WebServlet(name = "MarksheetListCtl", urlPatterns = { "/ctl/MarksheetListCtl" })

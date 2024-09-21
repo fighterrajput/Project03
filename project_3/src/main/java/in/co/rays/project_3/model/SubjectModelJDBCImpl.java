@@ -17,7 +17,7 @@ import in.co.rays.project_3.util.JDBCDataSource;
 
 /**
  * JDBC implements of Subject model
- * @author Riya Rana
+ * @author Ankit Rajput
  *
  */
 public class SubjectModelJDBCImpl implements SubjectModelInt {

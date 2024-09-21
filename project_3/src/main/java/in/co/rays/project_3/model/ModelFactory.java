@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 /**
  * ModelFactory decides which model implementation run
  * 
- * @author Riya Rana
+ * @author Ankit Rajput
  *
  */
 public final class ModelFactory {

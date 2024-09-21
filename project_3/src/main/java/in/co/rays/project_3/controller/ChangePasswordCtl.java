@@ -21,7 +21,7 @@ import in.co.rays.project_3.util.PropertyReader;
 import in.co.rays.project_3.util.ServletUtility;
 
 /**
- * @author Riya Rana
+ * @author Ankit Rajput
  *
  */
 @WebServlet(urlPatterns={"/ctl/ChangePasswordCtl"})
